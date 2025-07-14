@@ -2,6 +2,7 @@ package com.aaditx23.v2_assessment.application
 
 
 import com.aaditx23.v2_assessment.BuildConfig
+import com.aaditx23.v2_assessment.data.remote.api.RecordService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import okhttp3.OkHttpClient
@@ -12,6 +13,9 @@ import java.util.Properties
 object RetrofitServer {
     lateinit var retrofit: Retrofit
     private lateinit var moshi: Moshi
+    val Record: RecordService by lazy {
+        retrofit.create(RecordService::class.java)
+    }
 
     fun initializeRetrofit() {
         val client = OkHttpClient.Builder()
@@ -26,5 +30,8 @@ object RetrofitServer {
             .baseUrl(BuildConfig.BASE_URL)
             .build()
 
+
     }
+
+
 }
