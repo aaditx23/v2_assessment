@@ -13,7 +13,7 @@ plugins {
 }
 
 val property = Properties()
-file("src/main/java/com/aaditx23/v2_assessment/data/remote/api/api.properties").inputStream().use { property.load(it) }
+file("src/main/java/com/aaditx23/v2_assessment/data/remote/remote.properties").inputStream().use { property.load(it) }
 val baseUrl: String = property.getProperty("BASE_URL")
 
 android {
@@ -97,4 +97,7 @@ dependencies {
     implementation("androidx.room:room-runtime:2.7.2")
     implementation("androidx.room:room-ktx:2.7.2")
     ksp("androidx.room:room-compiler:2.6.1")
+
+// Test tools
+    testImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")
 }
