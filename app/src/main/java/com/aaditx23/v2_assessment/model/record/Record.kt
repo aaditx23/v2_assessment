@@ -5,7 +5,7 @@ import com.squareup.moshi.Json
 // Represents a single record/question block
 
 data class Record(
-    @Json(name = "id") val id: String,
+    @Json(name = "id") val id: Int,
     @Json(name = "skip") val skip: ReferId,
     @Json(name = "type") val type: String,
     @Json(name = "options") val options: List<Option>?,

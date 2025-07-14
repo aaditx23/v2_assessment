@@ -5,6 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import com.aaditx23.v2_assessment.ui.components.ErrorDialog
+import com.aaditx23.v2_assessment.ui.components.LoadingDialog
+import com.aaditx23.v2_assessment.ui.screens.main.JsonFlow.RecordView
 
 @Composable
 fun MainScreen() {
@@ -17,16 +20,18 @@ fun MainScreen() {
 
     when (val uiState = state.value) {
         is MainScreenState.Loading -> {
-            println("Loading...")
+            LoadingDialog("Please wait...")
         }
         is MainScreenState.Success -> {
-            println("Records: ")
-            Text(
-                text = uiState.records.toRecordString()
-            )
+            RecordView(records = uiState.records)
         }
         is MainScreenState.Error -> {
-            println("Error: ${uiState.error}")
+            ErrorDialog(
+                message = "An unexpected error occured",
+                onCancel = {
+                    viewModel.fetchRecords()
+                }
+            )
         }
     }
 }

@@ -22,7 +22,7 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             _state.value = MainScreenState.Loading
             try {
-                val response = recordRepository.getRecords()
+                val response = recordRepository.getRecords().record
                 _state.value = MainScreenState.Success(response)
             } catch (e: Exception) {
                 _state.value = MainScreenState.Error(e.message ?: "Unknown error")
