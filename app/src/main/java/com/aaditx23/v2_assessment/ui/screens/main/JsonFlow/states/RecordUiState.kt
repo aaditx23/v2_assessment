@@ -4,7 +4,6 @@ data class RecordUiState(
     val currentId: String = "1",
     val nextId: String = "1",
     val showSubmit: Boolean = false,
-    val saveText: Boolean = false,
     val hasError: Boolean = false,
     val hasValue: Boolean = false,
     val currentRecord: Record? = null

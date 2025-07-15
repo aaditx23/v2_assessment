@@ -1,6 +1,5 @@
 package com.aaditx23.v2_assessment.ui.screens.main
 
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
@@ -61,10 +60,6 @@ class MainViewModel @Inject constructor(
 
     fun setShowSubmit(show: Boolean) {
         _uiState.value = _uiState.value.copy(showSubmit = show)
-    }
-
-    fun setSaveText(save: Boolean) {
-        _uiState.value = _uiState.value.copy(saveText = save)
     }
 
     fun setHasError(hasError: Boolean) {

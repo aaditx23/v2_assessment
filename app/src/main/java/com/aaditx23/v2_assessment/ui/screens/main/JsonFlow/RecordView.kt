@@ -66,21 +66,17 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
         verticalArrangement = Arrangement.Center
     ) {
         currentRecord?.let { record ->
+            var currentAnswer by remember(record.id) { mutableStateOf<Answer?>(null) }
             when (record.type) {
                 "multipleChoice" -> {
                     MultipleChoice(
                         record = record,
                         onSelect = { ans ->
+                            currentAnswer = ans
                             viewModel.setHasValue(ans.value.isNotEmpty())
-                            viewModel.updateAnswer(uiState.currentId, ans)
-                            ans.referTo?.id?.let { it ->
-                                if (it == "submit") {
-                                    viewModel.setShowSubmit(true)
-                                } else {
-                                    viewModel.setNextId(it)
-                                }
-                            } ?: run {
-                                viewModel.setNextId(uiState.currentId)
+                            viewModel.setHasError(ans.hasError)
+                            ans.referTo?.let { it ->
+                                viewModel.setNextId(it.id)
                             }
                         }
                     )
@@ -91,11 +87,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                         onValueChange = {
                             viewModel.setHasValue(it.value.isNotEmpty())
                             viewModel.setHasError(it.hasError)
-
-                            if (uiState.saveText) {
-                                viewModel.updateAnswer(questionId = record.id, answer = it)
-                                viewModel.setSaveText(false)
-                            }
+                            currentAnswer = it
                         }
                     )
                 }
@@ -108,10 +100,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                             it.referTo?.let {
                                 viewModel.setNextId(it.id)
                             }
-                            if(uiState.saveText) {
-                                viewModel.updateAnswer(questionId = record.id, answer = it)
-                                viewModel.setSaveText(false)
-                            }
+                            currentAnswer = it
                         }
                     )
                 }
@@ -121,14 +110,10 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                         onSave = {
                             viewModel.setHasValue(it.value.isNotEmpty())
                             viewModel.setHasError(it.hasError)
-                            if(uiState.saveText){
-                                it.referTo?.let{
-                                    viewModel.setNextId(it.id)
-                                }
-                                viewModel.updateAnswer(questionId = record.id, answer = it)
-                                println(it.value)
-                                viewModel.setSaveText(false)
+                            it.referTo?.let{
+                                viewModel.setNextId(it.id)
                             }
+                            currentAnswer = it
                         }
                     )
                 }
@@ -166,11 +151,16 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                 } else {
                     Button(
                         onClick = {
+                            currentAnswer?.let {
+                                viewModel.updateAnswer(
+                                    questionId = uiState.currentId,
+                                    answer = it
+                                )
+                            }
                             val next = record.referTo?.id
                             if (!next.isNullOrEmpty()) viewModel.setCurrentId(next)
                             else if (uiState.nextId != uiState.currentId) viewModel.setCurrentId(uiState.nextId)
 
-                            if (record.type.contains("input", ignoreCase = true)) viewModel.setSaveText(true)
                             viewModel.setHasError(false)
                             viewModel.setHasValue(false)
                         },
