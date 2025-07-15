@@ -71,7 +71,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     MultipleChoice(
                         record = record,
                         onSelect = { ans ->
-                            viewModel.setHasValue(true)
+                            viewModel.setHasValue(ans.value.isNotEmpty())
                             viewModel.updateAnswer(uiState.currentId, ans)
                             ans.referTo?.id?.let { it ->
                                 if (it == "submit") {
@@ -89,7 +89,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     NumberInput(
                         record = record,
                         onValueChange = {
-                            viewModel.setHasValue(it.value != "")
+                            viewModel.setHasValue(it.value.isNotEmpty())
                             viewModel.setHasError(it.hasError)
 
                             if (uiState.saveText) {
@@ -104,7 +104,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                         record = record,
                         onSelect = {
                             viewModel.setHasValue(it.referTo != null)
-                            viewModel.setHasError(false)
+                            viewModel.setHasError(it.hasError)
                             it.referTo?.let {
                                 viewModel.setNextId(it.id)
                             }
@@ -119,8 +119,8 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     CheckBox(
                         record = record,
                         onSave = {
-                            viewModel.setHasValue(it.value != "")
-                            viewModel.setHasError(false)
+                            viewModel.setHasValue(it.value.isNotEmpty())
+                            viewModel.setHasError(it.hasError)
                             if(uiState.saveText){
                                 it.referTo?.let{
                                     viewModel.setNextId(it.id)
@@ -133,7 +133,13 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     )
                 }
                 "camera" -> {
-                    // TODO: Handle Camera input
+                    Camera(
+                        record = record,
+                        onSave = {
+                            viewModel.setHasValue(it.value.isNotEmpty())
+                            viewModel.setHasError(it.hasError)
+                        }
+                    )
                 }
                 "textInput" -> {
                     // TODO: Handle Text input
