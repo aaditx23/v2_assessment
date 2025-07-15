@@ -1,16 +1,20 @@
 package com.aaditx23.v2_assessment.ui.screens.main.JsonFlow
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.aaditx23.v2_assessment.model.answer.Answer
 import com.aaditx23.v2_assessment.model.record.Record
+import com.aaditx23.v2_assessment.ui.components.ProgressBar
 import com.aaditx23.v2_assessment.ui.screens.main.MainViewModel
 
 @Composable
@@ -21,6 +25,15 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
 
     LaunchedEffect(uiState.currentId) {
         currentRecord = records.find { it.id == uiState.currentId }
+    }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top= 50.dp),
+        contentAlignment = Alignment.TopStart
+    ){
+        ProgressBar(uiState.currentId.toFloat(), records.size.toFloat())
     }
 
     Column(

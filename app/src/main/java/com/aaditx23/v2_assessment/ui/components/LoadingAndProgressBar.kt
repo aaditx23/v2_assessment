@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
 
 @Composable
@@ -55,8 +56,8 @@ fun ProgressBar(progress: Float, total: Float, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 5.dp),
-            color = MaterialTheme.colorScheme.primary,
-            trackColor = MaterialTheme.colorScheme.tertiary,
+            color = Color(0xFF9C27B0),          // Deep Purple (Primary Progress Color)
+            trackColor = Color(0xFFE1BEE7),
             strokeCap = StrokeCap.Round
         )
     }
