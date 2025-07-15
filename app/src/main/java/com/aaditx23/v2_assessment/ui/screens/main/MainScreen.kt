@@ -23,7 +23,7 @@ fun MainScreen() {
             LoadingDialog("Please wait...")
         }
         is MainScreenState.Success -> {
-            RecordView(records = uiState.records)
+            RecordView(records = uiState.records, viewModel = viewModel)
         }
         is MainScreenState.Error -> {
             ErrorDialog(

@@ -10,6 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
+import com.aaditx23.v2_assessment.model.answer.Answer
 import com.aaditx23.v2_assessment.model.record.Record
 
 /*
@@ -42,7 +43,7 @@ import com.aaditx23.v2_assessment.model.record.Record
 */
 
 @Composable
-fun MultipleChoice(record: Record, onSelect: (id: Int) -> Unit) {
+fun MultipleChoice(record: Record, onSelect: (Answer) -> Unit) {
     val options = record.options ?: return
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
@@ -58,8 +59,14 @@ fun MultipleChoice(record: Record, onSelect: (id: Int) -> Unit) {
                     selected = isSelected,
                     onClick = {
                         selectedIndex = index
-                        val referToId = option.referTo?.id?.toIntOrNull() ?: -1
-                        onSelect(referToId)
+                        onSelect(
+                            Answer(
+                                questionType = record.type,
+                                referTo = option.referTo,
+                                value = option.value,
+                                valueId = index.toString()
+                            )
+                        )
                     },
                     colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary)
                 )
