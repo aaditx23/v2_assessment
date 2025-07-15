@@ -6,7 +6,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -33,7 +38,26 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
             .padding(top= 50.dp),
         contentAlignment = Alignment.TopStart
     ){
-        ProgressBar(uiState.currentId.toFloat(), records.size.toFloat())
+        Column(
+            horizontalAlignment = Alignment.End
+        ) {
+            ProgressBar(uiState.currentId.toFloat(), records.size.toFloat())
+
+            IconButton(
+                onClick = {
+                    viewModel.setCurrentId("1")
+                    viewModel.clearAnswers()
+                }
+            ) {
+                Icon(
+                    imageVector = Icons.Outlined.Refresh,
+                    contentDescription = "Refresh",
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .size(24.dp)
+                )
+            }
+        }
     }
 
     Column(
@@ -49,11 +73,11 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                         onSelect = { ans ->
                             viewModel.setHasValue(true)
                             viewModel.updateAnswer(uiState.currentId, ans)
-                            ans.referTo?.id?.let { referToId ->
-                                if (referToId == "submit") {
+                            ans.referTo?.id?.let { it ->
+                                if (it == "submit") {
                                     viewModel.setShowSubmit(true)
                                 } else {
-                                    viewModel.setNextId(referToId)
+                                    viewModel.setNextId(it)
                                 }
                             } ?: run {
                                 viewModel.setNextId(uiState.currentId)
@@ -79,12 +103,12 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     DropDown(
                         record = record,
                         onSelect = {
-                            viewModel.setHasValue(true)
+                            viewModel.setHasValue(it.referTo != null)
                             viewModel.setHasError(false)
+                            it.referTo?.let {
+                                viewModel.setNextId(it.id)
+                            }
                             if(uiState.saveText) {
-                                it.referTo?.let {
-                                    viewModel.setNextId(it.id)
-                                }
                                 viewModel.updateAnswer(questionId = record.id, answer = it)
                                 viewModel.setSaveText(false)
                             }
@@ -92,7 +116,21 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     )
                 }
                 "checkbox" -> {
-                    // TODO: Handle Checkboxes
+                    CheckBox(
+                        record = record,
+                        onSave = {
+                            viewModel.setHasValue(it.value != "")
+                            viewModel.setHasError(false)
+                            if(uiState.saveText){
+                                it.referTo?.let{
+                                    viewModel.setNextId(it.id)
+                                }
+                                viewModel.updateAnswer(questionId = record.id, answer = it)
+                                println(it.value)
+                                viewModel.setSaveText(false)
+                            }
+                        }
+                    )
                 }
                 "camera" -> {
                     // TODO: Handle Camera input
