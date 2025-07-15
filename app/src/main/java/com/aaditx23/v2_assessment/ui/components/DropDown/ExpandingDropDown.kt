@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -36,11 +37,10 @@ import com.aaditx23.v2_assessment.ui.components.HSpace
 @Composable
 fun ExpandingDropDown(
     label: String,
-    onSelected: (String) -> Unit,
+    onSelected: (DropDownItem) -> Unit,
     list: List<DropDownItem>,
-    labelIcon: ImageVector? = null,
-    selected: String = "",
     modifier: Modifier = Modifier,
+    selected: String = "",
     enabled: Boolean = true,
     shadow: Int = 8,
     roundedCorner: Int = 8
@@ -50,18 +50,13 @@ fun ExpandingDropDown(
     val interactionSource = remember { MutableInteractionSource() }
     val rotation by animateFloatAsState(if (expanded) 0f else -90f)
 
-    Column {
+    Column(
+        modifier = modifier
+    ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = modifier.padding(5.dp)
+            modifier = Modifier.padding(5.dp)
         ) {
-            if (labelIcon != null) {
-                Icon(
-                    imageVector = labelIcon,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp).padding(end = 4.dp)
-                )
-            }
             Text(
                 text = label,
                 fontWeight = FontWeight.W700
@@ -70,9 +65,9 @@ fun ExpandingDropDown(
         Surface(
             shape = RoundedCornerShape(roundedCorner.dp),
             shadowElevation = shadow.dp,
-            modifier = modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Column(modifier = modifier) {
+            Column {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -84,7 +79,8 @@ fun ExpandingDropDown(
                         ) {
                             expanded = !expanded
                         }
-                        .padding(vertical = 12.dp),
+                        .padding(vertical = 12.dp)
+                        .padding(start = 5.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
@@ -95,7 +91,7 @@ fun ExpandingDropDown(
                             .rotate(rotation)
                             .size(24.dp)
                     )
-                    HSpace(2)
+                    HSpace(5)
 
                     Row(
                         modifier = Modifier
@@ -108,14 +104,6 @@ fun ExpandingDropDown(
                             text = selected,
                             fontWeight = FontWeight.Medium,
                         )
-                        labelIcon?.let {
-                            Icon(
-                                imageVector = if (selectedItem.name == "") it else selectedItem.icon!!,
-                                contentDescription = "labelIcon",
-                                modifier = Modifier
-                                    .size(18.dp)
-                            )
-                        }
                     }
                 }
                 HorizontalDivider(
@@ -133,7 +121,7 @@ fun ExpandingDropDown(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .clickable {
-                                        onSelected(item.name)
+                                        onSelected(item)
                                         selectedItem = item
                                         expanded = false
                                     }
@@ -142,24 +130,23 @@ fun ExpandingDropDown(
                                 horizontalArrangement = Arrangement.SpaceBetween
                             ) {
 
+
                                 Text(
                                     text = item.name,
                                     modifier = Modifier
-                                        .padding(start = 20.dp)
+                                        .padding(start = 28.dp)
                                 )
-                                item.icon?.let {
+                                if (item.name == selected && selected.isNotBlank()) {
                                     Icon(
-                                        imageVector = it,
-                                        contentDescription = item.name,
-                                        modifier = Modifier
-                                            .padding(end = 5.dp)
-                                            .size(18.dp)
+                                        imageVector = Icons.Default.Check,
+                                        contentDescription = "Selected",
+                                        modifier = Modifier.size(18.dp)
                                     )
                                 }
                             }
                             if (item != list.last()) {
                                 HorizontalDivider(
-                                    thickness = 0.5.dp,
+                                    thickness = 0.8.dp,
                                     modifier = Modifier.fillMaxWidth()
                                 )
                             }

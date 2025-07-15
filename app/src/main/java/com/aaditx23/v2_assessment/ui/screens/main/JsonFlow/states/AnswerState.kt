@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.ui.screens.main.JsonFlow
+package com.aaditx23.v2_assessment.ui.screens.main.JsonFlow.states
 
 import com.aaditx23.v2_assessment.model.answer.Answer
 

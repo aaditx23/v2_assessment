@@ -15,17 +15,25 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.ImeAction
 
 import androidx.compose.ui.unit.dp
+import com.aaditx23.v2_assessment.model.answer.Answer
 import com.aaditx23.v2_assessment.model.record.Record
 import java.util.regex.Pattern
 
 @Composable
 fun NumberInput(
     record: Record,
-    onValueChange: (String, Boolean) -> Unit,
+    onValueChange: (Answer) -> Unit,
 ) {
     var input by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
     val regex = record.validations?.regex
+    val ans = Answer(
+        questionType = record.type,
+        referTo = record.referTo,
+        value = "",
+        valueId = null,
+        hasError = false
+    )
 
     Column(
         modifier = Modifier
@@ -43,7 +51,7 @@ fun NumberInput(
                 } else {
                     error = null
                 }
-                onValueChange(it, error != null )
+                onValueChange(ans.copy(value = it, hasError = error != null) )
             },
             isError = error != null,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
