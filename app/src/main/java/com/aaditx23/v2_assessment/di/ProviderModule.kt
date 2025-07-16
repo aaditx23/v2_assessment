@@ -2,6 +2,9 @@ package com.aaditx23.v2_assessment.di
 
 
 import com.aaditx23.v2_assessment.application.RetrofitServer
+import com.aaditx23.v2_assessment.data.local.Answer.AnswerDao
+import com.aaditx23.v2_assessment.data.local.AppDatabase
+import com.aaditx23.v2_assessment.data.local.Submission.SubmissionDao
 import com.aaditx23.v2_assessment.data.remote.service.RecordService
 import dagger.Module
 import dagger.Provides
@@ -17,5 +20,17 @@ class ProviderModule {
     @Singleton
     fun provideRecordService(): RecordService {
         return RetrofitServer.Record
+    }
+
+    @Provides
+    @Singleton
+    fun provideAnswerDao(database: AppDatabase): AnswerDao {
+        return database.answerDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideSubmissionDao(database: AppDatabase): SubmissionDao {
+        return database.submissionDao()
     }
 }
