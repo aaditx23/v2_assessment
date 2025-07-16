@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.ui.screens.main.JsonFlow.states
+package com.aaditx23.v2_assessment.ui.components.JsonFlow.states
 
 data class RecordUiState(
     val currentId: String = "1",

@@ -11,8 +11,8 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.aaditx23.v2_assessment.ui.screens.main.JsonFlow.states.AnswerState
-import com.aaditx23.v2_assessment.ui.screens.main.JsonFlow.states.RecordUiState
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.AnswerState
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.RecordUiState
 
 
 @HiltViewModel

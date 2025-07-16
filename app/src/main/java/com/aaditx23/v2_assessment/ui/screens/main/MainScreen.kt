@@ -1,13 +1,12 @@
 package com.aaditx23.v2_assessment.ui.screens.main
 
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import com.aaditx23.v2_assessment.ui.components.ErrorDialog
 import com.aaditx23.v2_assessment.ui.components.LoadingDialog
-import com.aaditx23.v2_assessment.ui.screens.main.JsonFlow.RecordView
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.RecordView
 
 @Composable
 fun MainScreen() {

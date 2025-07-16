@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.ui.screens.main.JsonFlow
+package com.aaditx23.v2_assessment.ui.components.JsonFlow
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
