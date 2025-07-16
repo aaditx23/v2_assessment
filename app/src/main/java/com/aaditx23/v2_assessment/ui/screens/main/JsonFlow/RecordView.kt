@@ -34,6 +34,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
 
     LaunchedEffect(uiState.currentId) {
         currentRecord = records.find { it.id == uiState.currentId }
+        viewModel.resetErrorAndHasValue()
     }
 
     Box(
@@ -71,17 +72,15 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
     ) {
         currentRecord?.let { record ->
             var currentAnswer by remember(record.id) { mutableStateOf<Answer?>(null) }
+
             when (record.type) {
                 "multipleChoice" -> {
                     MultipleChoice(
                         record = record,
-                        onSelect = { ans ->
-                            currentAnswer = ans
-                            viewModel.setHasValue(ans.value.isNotEmpty())
-                            viewModel.setHasError(ans.hasError)
-                            ans.referTo?.let { it ->
-                                viewModel.setNextId(it.id)
-                            }
+                        onSelect = {
+                            viewModel.updateValueErrorAndNextId(it)
+                            viewModel.updateAnswer(record.id, it, record.referTo)
+
                         }
                     )
                 }
@@ -89,8 +88,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     NumberInput(
                         record = record,
                         onValueChange = {
-                            viewModel.setHasValue(it.value.isNotEmpty())
-                            viewModel.setHasError(it.hasError)
+                            viewModel.updateValueErrorAndNextId(it)
                             currentAnswer = it
                         }
                     )
@@ -99,12 +97,8 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     DropDown(
                         record = record,
                         onSelect = {
-                            viewModel.setHasValue(it.referTo != null)
-                            viewModel.setHasError(it.hasError)
-                            it.referTo?.let {
-                                viewModel.setNextId(it.id)
-                            }
-                            currentAnswer = it
+                            viewModel.updateValueErrorAndNextId(it)
+                            viewModel.updateAnswer(record.id, it, record.referTo)
                         }
                     )
                 }
@@ -112,20 +106,14 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     CheckBox(
                         record = record,
                         onSave = {
-                            viewModel.setHasValue(it.value.isNotEmpty())
-                            viewModel.setHasError(it.hasError)
-                            it.referTo?.let{
-                                viewModel.setNextId(it.id)
-                            }
+                            viewModel.updateValueErrorAndNextId(it)
                             currentAnswer = it
                         }
                     )
                 }
                 "camera" -> {
-                    println(currentAnswer)
                     currentAnswer?.let {
                         if (it.value.isNotEmpty()){
-                            println("CURENT VALUE ${it.value}")
                             AsyncImage(
                                 model = it.value,
                                 contentDescription = "Image ",
@@ -139,12 +127,8 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                         Camera(
                             record = record,
                             onSave = {
-                                viewModel.setHasValue(it.value.isNotEmpty())
-                                viewModel.setHasError(it.hasError)
-                                currentAnswer = it
-                                it.referTo?.let{
-                                    viewModel.setNextId(it.id)
-                                }
+                                viewModel.updateValueErrorAndNextId(it)
+                                viewModel.updateAnswer(record.id, it, record.referTo)
                             }
                         )
                     }
@@ -153,12 +137,8 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     TextInput(
                         record = record,
                         onChange = {
-                            viewModel.setHasValue(it.value.isNotEmpty())
-                            viewModel.setHasError(it.hasError)
+                            viewModel.updateValueErrorAndNextId(it)
                             currentAnswer = it
-                            it.referTo?.let{
-                                viewModel.setNextId(it.id)
-                            }
                         }
                     )
                 }
@@ -168,11 +148,13 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
             }
 
             Row {
-                Button(
-                    onClick = { if (record.skip.id != "-1") viewModel.setCurrentId(record.skip.id) },
-                    enabled = record.skip.id != "-1"
-                ) {
-                    Text("Skip")
+                if(record.skip.id != "-1"){
+                    Button(
+                        onClick = { if (record.skip.id != "-1") viewModel.setCurrentId(record.skip.id) },
+                        enabled = record.skip.id != "-1"
+                    ) {
+                        Text("Skip")
+                    }
                 }
 
                 if (uiState.showSubmit || record.referTo?.id == "submit") {
@@ -181,18 +163,16 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     }) {
                         Text("Submit")
                     }
-                } else {
+                } else if (listOf("input", "checkBox").any { record.type.contains(it, ignoreCase = true) }) {
                     Button(
                         onClick = {
                             currentAnswer?.let {
                                 viewModel.updateAnswer(
                                     questionId = uiState.currentId,
-                                    answer = it
+                                    answer = it,
+                                    referTo = currentRecord!!.referTo
                                 )
                             }
-                            val next = record.referTo?.id
-                            if (!next.isNullOrEmpty()) viewModel.setCurrentId(next)
-                            else if (uiState.nextId != uiState.currentId) viewModel.setCurrentId(uiState.nextId)
 
                             viewModel.setHasError(false)
                             viewModel.setHasValue(false)

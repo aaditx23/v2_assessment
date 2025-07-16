@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 
 import com.aaditx23.v2_assessment.data.repository.RecordRepository
 import com.aaditx23.v2_assessment.model.answer.Answer
+import com.aaditx23.v2_assessment.model.record.ReferId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -28,10 +29,20 @@ class MainViewModel @Inject constructor(
     val uiState: StateFlow<RecordUiState> = _uiState
 
 
-    fun updateAnswer(questionId: String, answer: Answer) {
+    fun updateAnswer(questionId: String, answer: Answer, referTo: ReferId?) {
+
         val current = _answerState.value
         current.addAnswer(questionId, answer)
         _answerState.value = current
+        println("Updated $questionId to \n$answer")
+        navigateNext(referTo)
+
+    }
+    fun navigateNext(referTo: ReferId?) {
+        val nextId = referTo?.id ?: uiState.value.nextId
+        if (nextId.isNotEmpty() && nextId != uiState.value.currentId) {
+            setCurrentId(nextId)
+        }
     }
 
     fun clearAnswers() {
@@ -68,6 +79,18 @@ class MainViewModel @Inject constructor(
 
     fun setHasValue(hasValue: Boolean) {
         _uiState.value = _uiState.value.copy(hasValue = hasValue)
+    }
+
+    fun updateValueErrorAndNextId(ans: Answer){
+        setHasValue(ans.value.isNotEmpty())
+        setHasError(ans.hasError)
+        ans.referTo?.let {
+            setNextId(it.id)
+        }
+    }
+    fun resetErrorAndHasValue(){
+        setHasValue(false)
+        setHasError(false)
     }
 
     fun setCurrentRecord(record: Record?) {
