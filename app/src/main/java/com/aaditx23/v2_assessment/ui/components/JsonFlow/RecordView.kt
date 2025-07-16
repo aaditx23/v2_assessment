@@ -114,26 +114,13 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     )
                 }
                 "camera" -> {
-                    currentAnswer?.let {
-                        if (it.value.isNotEmpty()){
-                            AsyncImage(
-                                model = it.value,
-                                contentDescription = "Image ",
-                                contentScale = ContentScale.Crop,
-                                modifier = Modifier
-                                    .size(200.dp)
-                                    .padding(20.dp)
-                            )
+                    Camera(
+                        record = record,
+                        onSave = {
+                            viewModel.updateValueErrorAndNextId(it)
+                            viewModel.updateAnswer(record.id, it, record.referTo)
                         }
-                    }?: run{
-                        Camera(
-                            record = record,
-                            onSave = {
-                                viewModel.updateValueErrorAndNextId(it)
-                                viewModel.updateAnswer(record.id, it, record.referTo)
-                            }
-                        )
-                    }
+                    )
                 }
                 "textInput" -> {
                     TextInput(
@@ -195,13 +182,9 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
 
         if(submitted){
             LaunchedEffect(Unit){
-
                 viewModel.setSubmittedFlag(context, true)
-
-
                 val intent = Intent(context, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-
                 context.startActivity(intent)
                 (context as? Activity)?.finish()
             }
