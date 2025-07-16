@@ -2,6 +2,7 @@ package com.aaditx23.v2_assessment.di
 
 
 import com.aaditx23.v2_assessment.application.RetrofitServer
+import com.aaditx23.v2_assessment.application.RoomServer
 import com.aaditx23.v2_assessment.data.local.Answer.AnswerDao
 import com.aaditx23.v2_assessment.data.local.AppDatabase
 import com.aaditx23.v2_assessment.data.local.Submission.SubmissionDao
@@ -20,6 +21,12 @@ class ProviderModule {
     @Singleton
     fun provideRecordService(): RecordService {
         return RetrofitServer.Record
+    }
+
+    @Provides
+    @Singleton
+    fun providesAppDatabase(): AppDatabase{
+        return RoomServer.db
     }
 
     @Provides

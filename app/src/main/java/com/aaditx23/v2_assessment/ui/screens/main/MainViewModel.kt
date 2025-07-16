@@ -2,8 +2,11 @@ package com.aaditx23.v2_assessment.ui.screens.main
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.aaditx23.v2_assessment.data.local.Answer.AnswerEntity
+import com.aaditx23.v2_assessment.data.repository.AnswerRepository
 
 import com.aaditx23.v2_assessment.data.repository.RecordRepository
+import com.aaditx23.v2_assessment.data.repository.SubmissionRepository
 import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.ReferId
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,7 +20,9 @@ import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.RecordUiState
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val recordRepository: RecordRepository
+    private val recordRepository: RecordRepository,
+    private val submissionRepository: SubmissionRepository,
+    private val answerRepository: AnswerRepository
 ) : ViewModel() {
     private val _state = MutableStateFlow<MainScreenState>(MainScreenState.Loading)
     val state: StateFlow<MainScreenState> = _state
@@ -66,35 +71,44 @@ class MainViewModel @Inject constructor(
         _uiState.value = _uiState.value.copy(currentId = id)
     }
 
-    fun setNextId(id: String) {
-        _uiState.value = _uiState.value.copy(nextId = id)
+    fun setSubmitted(isSubmitted: Boolean){
+        _uiState.value = _uiState.value.copy(submitted = isSubmitted)
     }
 
-    fun setShowSubmit(show: Boolean) {
-        _uiState.value = _uiState.value.copy(showSubmit = show)
+    fun updateValueErrorAndNextId(ans: Answer) {
+        _uiState.value = _uiState.value.copy(
+            hasValue = ans.value.isNotEmpty(),
+            hasError = ans.hasError,
+            nextId = ans.referTo?.id ?: _uiState.value.nextId
+        )
     }
 
-    fun setHasError(hasError: Boolean) {
-        _uiState.value = _uiState.value.copy(hasError = hasError)
+    fun resetErrorAndHasValue() {
+        _uiState.value = _uiState.value.copy(
+            hasValue = false,
+            hasError = false,
+            submitted = false
+        )
+    }
+    fun restart(){
+        setCurrentId("1")
+        clearAnswers()
     }
 
-    fun setHasValue(hasValue: Boolean) {
-        _uiState.value = _uiState.value.copy(hasValue = hasValue)
-    }
+    fun submitAnswer(questionId: String, answer: Answer){
+        val current = _answerState.value
+        current.addAnswer(questionId, answer)
+        _answerState.value = current
 
-    fun updateValueErrorAndNextId(ans: Answer){
-        setHasValue(ans.value.isNotEmpty())
-        setHasError(ans.hasError)
-        ans.referTo?.let {
-            setNextId(it.id)
+        viewModelScope.launch {
+            val submissionId = submissionRepository.insertSubmission()
+            val answerList = answerState.value.answers.entries.map { (questionId, ans)->
+                ans.toEntity(submissionId, questionId)
+            }
+            answerRepository.insertAnswers(answerList)
+            setSubmitted(true)
         }
-    }
-    fun resetErrorAndHasValue(){
-        setHasValue(false)
-        setHasError(false)
+
     }
 
-    fun setCurrentRecord(record: Record?) {
-        _uiState.value = _uiState.value.copy(currentRecord = record)
-    }
 }

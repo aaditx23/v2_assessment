@@ -19,6 +19,11 @@ interface SubmissionDao {
 
     @Query("DELETE FROM submissions WHERE id = :id")
     suspend fun deleteSubmissionById(id: Long)
+
+    @Query("DELETE FROM submissions")
+    suspend fun deleteAllSubmissions()
+
+
 }
 
 

@@ -27,7 +27,6 @@ import com.aaditx23.v2_assessment.ui.screens.main.MainViewModel
 @Composable
 fun RecordView(records: List<Record>, viewModel: MainViewModel) {
     val uiState by viewModel.uiState.collectAsState()
-    val answerState by viewModel.answerState.collectAsState()
 
     var currentRecord by remember { mutableStateOf<Record?>(records.find { it.id == uiState.currentId }) }
 
@@ -49,8 +48,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
 
             IconButton(
                 onClick = {
-                    viewModel.setCurrentId("1")
-                    viewModel.clearAnswers()
+                    viewModel.restart()
                 }
             ) {
                 Icon(
@@ -160,14 +158,13 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                     Button(
                         onClick = {
                             currentAnswer?.let {
-                                viewModel.updateAnswer(
+                                viewModel.submitAnswer(
                                     questionId = uiState.currentId,
                                     answer = it,
-                                    referTo = currentRecord!!.referTo
                                 )
                             }
-                            println("All Answers: ${answerState.answers}")
-                        }
+                        },
+                        enabled = !uiState.hasError && uiState.hasValue
                     ) {
                         Text("Submit")
                     }
@@ -182,8 +179,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                                 )
                             }
 
-                            viewModel.setHasError(false)
-                            viewModel.setHasValue(false)
+
                         },
                         enabled = !uiState.hasError && uiState.hasValue
                     ) {
@@ -192,5 +188,12 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                 }
             }
         } ?: Text("Invalid question")
+
+        if(uiState.submitted){
+            SubmitSuccessDialog(
+                onViewSubmissions = {},
+                onRestart = { viewModel.restart() },
+            )
+        }
     }
 }

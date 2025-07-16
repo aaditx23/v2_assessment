@@ -19,5 +19,7 @@ object RoomServer {
             instance
         }
     }
+    val db: AppDatabase
+        get() = INSTANCE ?: throw IllegalStateException("RoomServer not initialized")
 }
 

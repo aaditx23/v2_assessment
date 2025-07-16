@@ -7,8 +7,10 @@ import javax.inject.Inject
 class SubmissionRepository @Inject constructor(
     private val submissionDao: SubmissionDao
 ) {
-    suspend fun insertSubmission(submission: SubmissionEntity): Long =
-        submissionDao.insertSubmission(submission)
+    suspend fun insertSubmission(): Long =
+        submissionDao.insertSubmission(
+            SubmissionEntity(timestamp = System.currentTimeMillis())
+        )
 
     suspend fun getAllSubmissions(): List<SubmissionEntity> =
         submissionDao.getAllSubmissions()

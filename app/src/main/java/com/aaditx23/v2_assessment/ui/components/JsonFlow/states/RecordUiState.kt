@@ -6,5 +6,6 @@ data class RecordUiState(
     val showSubmit: Boolean = false,
     val hasError: Boolean = false,
     val hasValue: Boolean = false,
-    val currentRecord: Record? = null
+    val currentRecord: Record? = null,
+    val submitted: Boolean = false
 )
