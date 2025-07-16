@@ -79,7 +79,7 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    // ViewModel
+// ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.1")
 
 // Hilt DI
@@ -97,6 +97,9 @@ dependencies {
     implementation("androidx.room:room-runtime:2.7.2")
     implementation("androidx.room:room-ktx:2.7.2")
     ksp("androidx.room:room-compiler:2.6.1")
+
+// Image loading
+    implementation("io.coil-kt.coil3:coil-compose:3.2.0")
 
 // Test tools
     testImplementation("com.squareup.okhttp3:mockwebserver:4.9.3")

@@ -1,10 +1,9 @@
-package com.aaditx23.v2_assessment.util
+package com.aaditx23.v2_assessment.util.permission
 
 import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 

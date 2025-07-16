@@ -5,20 +5,38 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.ColorPainter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
+import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.request.crossfade
+
 import com.aaditx23.v2_assessment.model.answer.Answer
-import com.aaditx23.v2_assessment.util.CameraPermission
+import com.aaditx23.v2_assessment.util.permission.CameraPermission
 import com.aaditx23.v2_assessment.util.FileUtil
 import com.aaditx23.v2_assessment.model.record.Record
+import java.io.File
+
+
+import android.graphics.Bitmap
+import android.graphics.ImageDecoder
+
 
 @Composable
 fun Camera(record: Record, onSave: (Answer) -> Unit) {
@@ -39,7 +57,6 @@ fun Camera(record: Record, onSave: (Answer) -> Unit) {
         ActivityResultContracts.TakePicture()
     ) { success ->
         if (success && imagePath.isNotEmpty()) {
-            println("IMAGE PATH: \n$imagePath")
             onSave(ans.copy(value = imagePath))
             isRejected = false
         } else {
@@ -64,7 +81,7 @@ fun Camera(record: Record, onSave: (Answer) -> Unit) {
 
     Box(
         modifier = Modifier
-            .fillMaxSize(),
+            .padding(20.dp),
         contentAlignment = Alignment.Center
     ){
         if (isRejected) {
@@ -77,9 +94,11 @@ fun Camera(record: Record, onSave: (Answer) -> Unit) {
                     Text("Try Again")
                 }
             }
-        } else {
+        }
+        else {
             Text("Launching camera...")
         }
+
     }
 }
 

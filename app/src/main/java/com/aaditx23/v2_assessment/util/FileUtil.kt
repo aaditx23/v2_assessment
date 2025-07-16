@@ -12,7 +12,10 @@ object FileUtil {
         val timeStamp = SimpleDateFormat("yyyyMMdd_HHmmss", Locale.US).format(Date())
         return File.createTempFile(
             "JPEG_${timeStamp}_", ".jpg",
-            context.filesDir // Internal storage: manipulating this file from other apps might cause it to break
+            context.filesDir
+        // Internal storage:
+        // manipulating this file from other apps might cause it to break
+        // No need for storage permission
         )
     }
 
