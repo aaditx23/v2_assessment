@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.data.remote.api
+package com.aaditx23.v2_assessment.data.remote.service
 
 import com.aaditx23.v2_assessment.BuildConfig
 import retrofit2.http.GET

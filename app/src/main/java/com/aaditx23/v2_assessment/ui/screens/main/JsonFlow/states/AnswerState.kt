@@ -1,6 +1,6 @@
 package com.aaditx23.v2_assessment.ui.screens.main.JsonFlow.states
 
-import com.aaditx23.v2_assessment.model.answer.Answer
+import com.aaditx23.v2_assessment.model.Answer
 
 data class AnswerState(
     val answers: MutableMap<String, Answer> = mutableMapOf()

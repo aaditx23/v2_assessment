@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.model.answer
+package com.aaditx23.v2_assessment.model
 
 import com.aaditx23.v2_assessment.model.record.ReferId
 

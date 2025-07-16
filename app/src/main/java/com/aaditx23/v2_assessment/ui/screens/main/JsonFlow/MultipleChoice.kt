@@ -10,7 +10,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.Alignment
-import com.aaditx23.v2_assessment.model.answer.Answer
+import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.Record
 
 @Composable

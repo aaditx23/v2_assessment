@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 
 import com.aaditx23.v2_assessment.data.repository.RecordRepository
-import com.aaditx23.v2_assessment.model.answer.Answer
+import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.ReferId
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -40,7 +40,8 @@ class MainViewModel @Inject constructor(
     }
     fun navigateNext(referTo: ReferId?) {
         val nextId = referTo?.id ?: uiState.value.nextId
-        if (nextId.isNotEmpty() && nextId != uiState.value.currentId) {
+        if (nextId == "submit") return
+        else if (nextId.isNotEmpty() && nextId != uiState.value.currentId) {
             setCurrentId(nextId)
         }
     }

@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.aaditx23.v2_assessment.model.answer.Answer
+import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.Record
 import com.aaditx23.v2_assessment.ui.components.ProgressBar
 import com.aaditx23.v2_assessment.ui.screens.main.MainViewModel
@@ -29,6 +29,7 @@ import com.aaditx23.v2_assessment.ui.screens.main.MainViewModel
 @Composable
 fun RecordView(records: List<Record>, viewModel: MainViewModel) {
     val uiState by viewModel.uiState.collectAsState()
+    val answerState by viewModel.answerState.collectAsState()
 
     var currentRecord by remember { mutableStateOf<Record?>(records.find { it.id == uiState.currentId }) }
 
@@ -158,9 +159,18 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                 }
 
                 if (uiState.showSubmit || record.referTo?.id == "submit") {
-                    Button(onClick = {
-                        viewModel.setShowSubmit(false)
-                    }) {
+                    Button(
+                        onClick = {
+                            currentAnswer?.let {
+                                viewModel.updateAnswer(
+                                    questionId = uiState.currentId,
+                                    answer = it,
+                                    referTo = currentRecord!!.referTo
+                                )
+                            }
+                            println("All Answers: ${answerState.answers}")
+                        }
+                    ) {
                         Text("Submit")
                     }
                 } else if (listOf("input", "checkBox").any { record.type.contains(it, ignoreCase = true) }) {

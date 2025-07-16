@@ -27,8 +27,8 @@ import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 
-import com.aaditx23.v2_assessment.model.answer.Answer
-import com.aaditx23.v2_assessment.util.permission.CameraPermission
+import com.aaditx23.v2_assessment.model.Answer
+import com.aaditx23.v2_assessment.util.CameraPermission
 import com.aaditx23.v2_assessment.util.FileUtil
 import com.aaditx23.v2_assessment.model.record.Record
 import java.io.File

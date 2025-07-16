@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.util.permission
+package com.aaditx23.v2_assessment.util
 
 import android.Manifest
 import android.app.Activity

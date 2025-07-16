@@ -2,8 +2,7 @@ package com.aaditx23.v2_assessment.di
 
 
 import com.aaditx23.v2_assessment.application.RetrofitServer
-import com.aaditx23.v2_assessment.data.repository.RecordRepository
-import com.aaditx23.v2_assessment.data.remote.api.RecordService
+import com.aaditx23.v2_assessment.data.remote.service.RecordService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

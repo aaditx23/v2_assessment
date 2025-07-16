@@ -1,17 +1,16 @@
-package com.aaditx23.v2_assessment
+package com.aaditx23.v2_assessment.retrofit
 
-import okhttp3.mockwebserver.MockWebServer
-import okhttp3.mockwebserver.MockResponse
-import retrofit2.Retrofit
-import retrofit2.converter.moshi.MoshiConverterFactory
+import com.aaditx23.v2_assessment.data.remote.model.ApiResponse
+import com.aaditx23.v2_assessment.data.remote.service.RecordService
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.runBlocking
+import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
-import com.aaditx23.v2_assessment.data.remote.api.RecordService
-import com.aaditx23.v2_assessment.data.remote.model.ApiResponse
-import com.squareup.moshi.Moshi
-import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import retrofit2.Retrofit
+import retrofit2.converter.moshi.MoshiConverterFactory
 
 class RecordServiceTest {
     private lateinit var mockWebServer: MockWebServer

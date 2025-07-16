@@ -10,6 +10,7 @@ plugins {
 
     id("com.google.devtools.ksp")
     id("dagger.hilt.android.plugin")
+    id("androidx.room")
 }
 
 val property = Properties()
@@ -17,6 +18,10 @@ file("src/main/java/com/aaditx23/v2_assessment/data/remote/remote.properties").i
 val baseUrl: String = property.getProperty("BASE_URL")
 
 android {
+
+    room {
+        schemaDirectory("$projectDir/schemas")
+    }
 
     namespace = "com.aaditx23.v2_assessment"
     compileSdk = 35
@@ -62,6 +67,11 @@ android {
     }
 }
 
+val roomVersion ="2.7.2"
+val retrofitVersion = "3.0.0"
+val moshVersion = "1.15.2"
+val hiltVersion = "2.56.2"
+
 dependencies {
 
     implementation(libs.androidx.core.ktx)
@@ -83,20 +93,23 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.1")
 
 // Hilt DI
-    implementation("com.google.dagger:hilt-android:2.56.2")
-    ksp("com.google.dagger:hilt-compiler:2.56")
+
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
+    ksp("com.google.dagger:hilt-compiler:$hiltVersion")
     implementation("androidx.hilt:hilt-navigation-compose:1.2.0")
 
 // Retrofit + Moshi for API Calls
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.squareup.retrofit2:converter-moshi:3.0.0")
-    implementation("com.squareup.moshi:moshi-kotlin:1.15.2")
-    ksp("com.squareup.moshi:moshi-kotlin-codegen:1.15.1")
+
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-moshi:$retrofitVersion")
+    implementation("com.squareup.moshi:moshi-kotlin:$moshVersion")
+    ksp("com.squareup.moshi:moshi-kotlin-codegen:$moshVersion")
 
 // Room Database
-    implementation("androidx.room:room-runtime:2.7.2")
-    implementation("androidx.room:room-ktx:2.7.2")
-    ksp("androidx.room:room-compiler:2.6.1")
+
+    implementation("androidx.room:room-runtime:$roomVersion")
+    implementation("androidx.room:room-ktx:$roomVersion")
+    ksp("androidx.room:room-compiler:$roomVersion")
 
 // Image loading
     implementation("io.coil-kt.coil3:coil-compose:3.2.0")
