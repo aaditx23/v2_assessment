@@ -142,12 +142,25 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                                 viewModel.setHasValue(it.value.isNotEmpty())
                                 viewModel.setHasError(it.hasError)
                                 currentAnswer = it
+                                it.referTo?.let{
+                                    viewModel.setNextId(it.id)
+                                }
                             }
                         )
                     }
                 }
                 "textInput" -> {
-                    // TODO: Handle Text input
+                    TextInput(
+                        record = record,
+                        onChange = {
+                            viewModel.setHasValue(it.value.isNotEmpty())
+                            viewModel.setHasError(it.hasError)
+                            currentAnswer = it
+                            it.referTo?.let{
+                                viewModel.setNextId(it.id)
+                            }
+                        }
+                    )
                 }
                 else -> {
                     Text("Unknown question type")

@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.aaditx23.v2_assessment.model.answer.Answer
@@ -37,7 +38,9 @@ fun CheckBox(record: Record, onSave: (Answer) -> Unit) {
             )
         }
         itemsIndexed(options) { index, option ->
-            Row {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Checkbox(
                     checked = checkedStates[index],
                     onCheckedChange = { checked ->
@@ -49,7 +52,10 @@ fun CheckBox(record: Record, onSave: (Answer) -> Unit) {
                         onSave(ans)
                     }
                 )
-                Text(text = option.value, modifier = Modifier.padding(start = 8.dp))
+                Text(
+                    text = option.value,
+                    modifier = Modifier.padding(start = 8.dp)
+                )
             }
         }
 

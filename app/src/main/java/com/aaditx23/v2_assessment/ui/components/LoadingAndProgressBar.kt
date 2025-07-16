@@ -56,8 +56,8 @@ fun ProgressBar(progress: Float, total: Float, modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 5.dp),
-            color = Color(0xFF9C27B0),          // Deep Purple (Primary Progress Color)
-            trackColor = Color(0xFFE1BEE7),
+            color = MaterialTheme.colorScheme.primary,
+            trackColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.5f),
             strokeCap = StrokeCap.Round
         )
     }

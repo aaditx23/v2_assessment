@@ -13,35 +13,6 @@ import androidx.compose.ui.Alignment
 import com.aaditx23.v2_assessment.model.answer.Answer
 import com.aaditx23.v2_assessment.model.record.Record
 
-/*
-
-{
-      "id": "1",
-      "skip": {
-        "id": "-1"
-      },
-      "type": "multipleChoice",
-      "options": [
-        {
-          "value": "multipleChoice 1",
-          "referTo": {
-            "id": "2"
-          }
-        },
-        {
-          "value": "multipleChoice 2",
-          "referTo": {
-            "id": "3"
-          }
-        }
-      ],
-      "question": {
-        "slug": "Select an option (Multiple Choice / RadioButton)"
-      }
-    },
-
-*/
-
 @Composable
 fun MultipleChoice(record: Record, onSelect: (Answer) -> Unit) {
     val options = record.options ?: return
@@ -70,7 +41,10 @@ fun MultipleChoice(record: Record, onSelect: (Answer) -> Unit) {
                     },
                     colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary)
                 )
-                Text(text = option.value, modifier = Modifier)
+                Text(
+                    text = option.value,
+                    modifier = Modifier
+                )
             }
         }
     }
