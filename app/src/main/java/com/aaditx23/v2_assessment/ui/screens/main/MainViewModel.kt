@@ -1,8 +1,8 @@
 package com.aaditx23.v2_assessment.ui.screens.main
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerEntity
 import com.aaditx23.v2_assessment.data.repository.AnswerRepository
 
 import com.aaditx23.v2_assessment.data.repository.RecordRepository
@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.AnswerState
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.RecordUiState
+import androidx.core.content.edit
 
 
 @HiltViewModel
@@ -24,14 +25,17 @@ class MainViewModel @Inject constructor(
     private val submissionRepository: SubmissionRepository,
     private val answerRepository: AnswerRepository
 ) : ViewModel() {
-    private val _state = MutableStateFlow<MainScreenState>(MainScreenState.Loading)
-    val state: StateFlow<MainScreenState> = _state
+    private val _mainUiState = MutableStateFlow<MainScreenState>(MainScreenState.Loading)
+    val mainUiState: StateFlow<MainScreenState> = _mainUiState
 
     private val _answerState = MutableStateFlow(AnswerState())
     val answerState: StateFlow<AnswerState> = _answerState
 
-    private val _uiState = MutableStateFlow(RecordUiState())
-    val uiState: StateFlow<RecordUiState> = _uiState
+    private val _recordUiState = MutableStateFlow(RecordUiState())
+    val recordUiState: StateFlow<RecordUiState> = _recordUiState
+
+    private val _submitted = MutableStateFlow(false)
+    val submitted: StateFlow<Boolean> = _submitted
 
 
     fun updateAnswer(questionId: String, answer: Answer, referTo: ReferId?) {
@@ -44,9 +48,9 @@ class MainViewModel @Inject constructor(
 
     }
     fun navigateNext(referTo: ReferId?) {
-        val nextId = referTo?.id ?: uiState.value.nextId
+        val nextId = referTo?.id ?: recordUiState.value.nextId
         if (nextId == "submit") return
-        else if (nextId.isNotEmpty() && nextId != uiState.value.currentId) {
+        else if (nextId.isNotEmpty() && nextId != recordUiState.value.currentId) {
             setCurrentId(nextId)
         }
     }
@@ -57,37 +61,33 @@ class MainViewModel @Inject constructor(
 
     fun fetchRecords() {
         viewModelScope.launch {
-            _state.value = MainScreenState.Loading
+            _mainUiState.value = MainScreenState.Loading
             try {
                 val response = recordRepository.getRecords().record
-                _state.value = MainScreenState.Success(response)
+                _mainUiState.value = MainScreenState.Success(response)
             } catch (e: Exception) {
-                _state.value = MainScreenState.Error(e.message ?: "Unknown error")
+                _mainUiState.value = MainScreenState.Error(e.message ?: "Unknown error")
             }
         }
     }
 
     fun setCurrentId(id: String) {
-        _uiState.value = _uiState.value.copy(currentId = id)
+        _recordUiState.value = _recordUiState.value.copy(currentId = id)
     }
 
-    fun setSubmitted(isSubmitted: Boolean){
-        _uiState.value = _uiState.value.copy(submitted = isSubmitted)
-    }
 
     fun updateValueErrorAndNextId(ans: Answer) {
-        _uiState.value = _uiState.value.copy(
+        _recordUiState.value = _recordUiState.value.copy(
             hasValue = ans.value.isNotEmpty(),
             hasError = ans.hasError,
-            nextId = ans.referTo?.id ?: _uiState.value.nextId
+            nextId = ans.referTo?.id ?: _recordUiState.value.nextId
         )
     }
 
     fun resetErrorAndHasValue() {
-        _uiState.value = _uiState.value.copy(
+        _recordUiState.value = _recordUiState.value.copy(
             hasValue = false,
             hasError = false,
-            submitted = false
         )
     }
     fun restart(){
@@ -95,7 +95,8 @@ class MainViewModel @Inject constructor(
         clearAnswers()
     }
 
-    fun submitAnswer(questionId: String, answer: Answer){
+    fun submitAnswer(questionId: String, answer: Answer
+    ){
         val current = _answerState.value
         current.addAnswer(questionId, answer)
         _answerState.value = current
@@ -106,8 +107,25 @@ class MainViewModel @Inject constructor(
                 ans.toEntity(submissionId, questionId)
             }
             answerRepository.insertAnswers(answerList)
-            setSubmitted(true)
+            _submitted.value = true
         }
+
+    }
+    fun setSubmitted(submitted: Boolean){
+        _submitted.value = submitted
+    }
+
+    fun setSubmittedFlag(context: Context, isSubmitted: Boolean){
+        viewModelScope.launch {
+            val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
+            preferences.edit { putBoolean("submitted", isSubmitted) }
+        }
+    }
+
+    fun getSubmittedFlag(context: Context){
+        val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
+        _submitted.value = preferences.getBoolean("submitted", false)
+
 
     }
 

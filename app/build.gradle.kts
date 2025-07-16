@@ -93,6 +93,9 @@ dependencies {
     // ViewModel
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.9.1")
 
+    // Navigation
+    implementation("androidx.navigation:navigation-compose:2.9.1")
+
     // Hilt DI
     implementation("com.google.dagger:hilt-android:$hiltVersion")
     ksp("com.google.dagger:hilt-compiler:$hiltVersion")

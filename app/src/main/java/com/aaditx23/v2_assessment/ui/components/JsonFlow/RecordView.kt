@@ -1,5 +1,7 @@
 package com.aaditx23.v2_assessment.ui.components.JsonFlow
 
+import android.app.Activity
+import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,8 +19,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.aaditx23.v2_assessment.MainActivity
 import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.Record
 import com.aaditx23.v2_assessment.ui.components.ProgressBar
@@ -26,9 +30,11 @@ import com.aaditx23.v2_assessment.ui.screens.main.MainViewModel
 
 @Composable
 fun RecordView(records: List<Record>, viewModel: MainViewModel) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by viewModel.recordUiState.collectAsState()
+    val submitted by viewModel.submitted.collectAsState()
 
     var currentRecord by remember { mutableStateOf<Record?>(records.find { it.id == uiState.currentId }) }
+    val context = LocalContext.current
 
     LaunchedEffect(uiState.currentId) {
         currentRecord = records.find { it.id == uiState.currentId }
@@ -38,7 +44,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(top= 50.dp),
+            .padding(top = 50.dp),
         contentAlignment = Alignment.TopStart
     ){
         Column(
@@ -77,7 +83,6 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                         onSelect = {
                             viewModel.updateValueErrorAndNextId(it)
                             viewModel.updateAnswer(record.id, it, record.referTo)
-
                         }
                     )
                 }
@@ -157,6 +162,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                 if (uiState.showSubmit || record.referTo?.id == "submit") {
                     Button(
                         onClick = {
+                            println("Current Answer $currentAnswer")
                             currentAnswer?.let {
                                 viewModel.submitAnswer(
                                     questionId = uiState.currentId,
@@ -178,8 +184,6 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                                     referTo = currentRecord!!.referTo
                                 )
                             }
-
-
                         },
                         enabled = !uiState.hasError && uiState.hasValue
                     ) {
@@ -189,11 +193,18 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
             }
         } ?: Text("Invalid question")
 
-        if(uiState.submitted){
-            SubmitSuccessDialog(
-                onViewSubmissions = {},
-                onRestart = { viewModel.restart() },
-            )
+        if(submitted){
+            LaunchedEffect(Unit){
+
+                viewModel.setSubmittedFlag(context, true)
+
+
+                val intent = Intent(context, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+
+                context.startActivity(intent)
+                (context as? Activity)?.finish()
+            }
         }
     }
 }

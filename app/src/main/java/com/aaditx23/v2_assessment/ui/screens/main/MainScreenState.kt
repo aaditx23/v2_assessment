@@ -1,6 +1,5 @@
 package com.aaditx23.v2_assessment.ui.screens.main
 
-import com.aaditx23.v2_assessment.data.remote.model.ApiResponse
 import com.aaditx23.v2_assessment.model.record.Record
 
 
