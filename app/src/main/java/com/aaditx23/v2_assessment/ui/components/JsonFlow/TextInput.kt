@@ -15,7 +15,7 @@ import com.aaditx23.v2_assessment.model.record.Record
 import java.util.regex.Pattern
 
 @Composable
-fun TextInput(record: Record, onChange: (Answer) -> Unit) {
+fun TextInput(record: Record, onChange: (Answer) -> Unit, answer: Answer? = null) {
     var text by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
     val regex = record.validations?.regex
@@ -33,7 +33,7 @@ fun TextInput(record: Record, onChange: (Answer) -> Unit) {
     ) {
         Text(text = record.question?.slug ?: "Enter text")
         OutlinedTextField(
-            value = text,
+            value = answer?.value ?: text,
             onValueChange = {
                 text = it
                 if (regex != null && it.isNotBlank()) {
@@ -52,6 +52,7 @@ fun TextInput(record: Record, onChange: (Answer) -> Unit) {
             label = { Text("Enter text") },
             shape = RoundedCornerShape(10.dp),
             modifier = Modifier.fillMaxWidth(),
+            enabled = answer == null
         )
         if (error != null) {
             Text(error!!, color = Color.Red)

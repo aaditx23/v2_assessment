@@ -14,14 +14,14 @@ import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.Record
 
 @Composable
-fun MultipleChoice(record: Record, onSelect: (Answer) -> Unit) {
+fun MultipleChoice(record: Record, onSelect: (Answer) -> Unit, answer: Answer? = null) {
     val options = record.options ?: return
     var selectedIndex by remember { mutableIntStateOf(-1) }
 
     Column {
         Text(text = record.question?.slug ?: "", style = MaterialTheme.typography.titleMedium)
         options.forEachIndexed { index, option ->
-            val isSelected = selectedIndex == index
+            val isSelected = if(answer == null) selectedIndex == index else answer.valueId?.toInt() == index
             Row(
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
@@ -39,7 +39,8 @@ fun MultipleChoice(record: Record, onSelect: (Answer) -> Unit) {
                             )
                         )
                     },
-                    colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary)
+                    colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary),
+                    enabled = answer == null
                 )
                 Text(
                     text = option.value,

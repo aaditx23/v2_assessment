@@ -22,6 +22,7 @@ import java.util.regex.Pattern
 fun NumberInput(
     record: Record,
     onValueChange: (Answer) -> Unit,
+    answer: Answer? = null
 ) {
     var input by remember { mutableStateOf("") }
     var error by remember { mutableStateOf<String?>(null) }
@@ -41,7 +42,7 @@ fun NumberInput(
     ) {
         Text(text = record.question?.slug ?: "Question not Found")
         OutlinedTextField(
-            value = input,
+            value = answer?.value ?: input,
             onValueChange = {
                 input = it
                 if (regex != null && it.isNotBlank()) {
@@ -56,7 +57,8 @@ fun NumberInput(
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
             label = { Text("Number") },
             modifier = Modifier.fillMaxWidth(),
-            shape = RoundedCornerShape(10.dp)
+            shape = RoundedCornerShape(10.dp),
+            enabled = answer == null
         )
         if (error != null) {
             Text(text = error!!, color = MaterialTheme.colorScheme.error)

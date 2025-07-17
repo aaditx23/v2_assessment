@@ -19,10 +19,14 @@ import com.aaditx23.v2_assessment.ui.components.DropDown.ExpandingDropDown
 @Composable
 fun DropDown(
     record: Record,
-    onSelect: (Answer) -> Unit
+    onSelect: (Answer) -> Unit,
+    answer: Answer? = null
 ) {
     val options = record.options?.map { DropDownItem(name = it.value, referId = it.referTo) } ?: emptyList()
     var selectedOption by remember { mutableStateOf("Select an option") }
+    answer?.let {
+        selectedOption = answer.value
+    }
     var ans = Answer(
         questionType = record.type,
         referTo = null,
@@ -42,6 +46,7 @@ fun DropDown(
         list = options,
         selected = selectedOption,
         modifier = Modifier
-            .padding(10.dp)
+            .padding(10.dp),
+        enabled = answer == null
     )
 }
