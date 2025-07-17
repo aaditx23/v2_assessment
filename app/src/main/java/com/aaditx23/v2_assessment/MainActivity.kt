@@ -12,7 +12,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import com.aaditx23.v2_assessment.ui.screens.Navigation
 import com.aaditx23.v2_assessment.ui.theme.V2_assessmentTheme
-import com.aaditx23.v2_assessment.util.SharedPreferences
+import com.aaditx23.v2_assessment.data.local.SharedPreferences
 import dagger.hilt.android.AndroidEntryPoint
 
 

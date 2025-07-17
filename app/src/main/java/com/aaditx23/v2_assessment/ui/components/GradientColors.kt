@@ -23,20 +23,5 @@ object GradientColors {
             Color(0xFF1C1C1C)  // Dark gray to simulate the night sky
         )
     )
-    @Composable
-    fun animatedGradient(
-        offset: Float,
-        colors: List<Color>,
-        mode: TileMode
-    ): Brush {
-        return remember(offset) {
-            Brush.linearGradient(
-                colors = colors,
-                start = Offset(1000f * offset, 0f),
-                end = Offset(1000f * (offset + 1), 0f),
-                tileMode = mode
-            )
-        }
-    }
 
 }

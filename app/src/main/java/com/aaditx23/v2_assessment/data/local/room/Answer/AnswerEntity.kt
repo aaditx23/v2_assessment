@@ -1,9 +1,9 @@
-package com.aaditx23.v2_assessment.data.local.Answer
+package com.aaditx23.v2_assessment.data.local.room.Answer
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.aaditx23.v2_assessment.data.local.Submission.SubmissionEntity
+import com.aaditx23.v2_assessment.data.local.room.Submission.SubmissionEntity
 import com.aaditx23.v2_assessment.model.Answer
 
 @Entity(

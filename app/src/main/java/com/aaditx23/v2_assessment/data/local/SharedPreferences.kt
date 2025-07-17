@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.util
+package com.aaditx23.v2_assessment.data.local
 
 import android.content.Context
 import androidx.core.content.edit

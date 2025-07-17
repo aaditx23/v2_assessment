@@ -1,11 +1,11 @@
-package com.aaditx23.v2_assessment.data.local
+package com.aaditx23.v2_assessment.data.local.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerDao
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerEntity
-import com.aaditx23.v2_assessment.data.local.Submission.SubmissionDao
-import com.aaditx23.v2_assessment.data.local.Submission.SubmissionEntity
+import com.aaditx23.v2_assessment.data.local.room.Answer.AnswerDao
+import com.aaditx23.v2_assessment.data.local.room.Answer.AnswerEntity
+import com.aaditx23.v2_assessment.data.local.room.Submission.SubmissionDao
+import com.aaditx23.v2_assessment.data.local.room.Submission.SubmissionEntity
 
 @Database(
     entities = [

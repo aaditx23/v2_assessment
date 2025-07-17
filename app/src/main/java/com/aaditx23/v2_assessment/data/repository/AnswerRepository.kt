@@ -1,7 +1,7 @@
 package com.aaditx23.v2_assessment.data.repository
 
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerDao
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerEntity
+import com.aaditx23.v2_assessment.data.local.room.Answer.AnswerDao
+import com.aaditx23.v2_assessment.data.local.room.Answer.AnswerEntity
 import javax.inject.Inject
 
 class AnswerRepository @Inject constructor(

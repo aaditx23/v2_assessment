@@ -4,11 +4,11 @@ import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerDao
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerEntity
-import com.aaditx23.v2_assessment.data.local.AppDatabase
-import com.aaditx23.v2_assessment.data.local.Submission.SubmissionDao
-import com.aaditx23.v2_assessment.data.local.Submission.SubmissionEntity
+import com.aaditx23.v2_assessment.data.local.room.Answer.AnswerDao
+import com.aaditx23.v2_assessment.data.local.room.Answer.AnswerEntity
+import com.aaditx23.v2_assessment.data.local.room.AppDatabase
+import com.aaditx23.v2_assessment.data.local.room.Submission.SubmissionDao
+import com.aaditx23.v2_assessment.data.local.room.Submission.SubmissionEntity
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before

@@ -2,7 +2,7 @@ package com.aaditx23.v2_assessment.application
 
 import android.content.Context
 import androidx.room.Room
-import com.aaditx23.v2_assessment.data.local.AppDatabase
+import com.aaditx23.v2_assessment.data.local.room.AppDatabase
 
 object RoomServer {
     @Volatile

@@ -10,7 +10,7 @@ import com.aaditx23.v2_assessment.ui.components.ErrorDialog
 import com.aaditx23.v2_assessment.ui.components.LoadingDialog
 import com.aaditx23.v2_assessment.ui.screens.main.child.RecordView
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.SubmitSuccessDialog
-import com.aaditx23.v2_assessment.util.SharedPreferences
+import com.aaditx23.v2_assessment.data.local.SharedPreferences
 
 @Composable
 fun MainScreen(

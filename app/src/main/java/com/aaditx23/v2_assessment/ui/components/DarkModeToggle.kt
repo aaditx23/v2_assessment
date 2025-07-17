@@ -17,6 +17,8 @@ import androidx.compose.material.icons.filled.Lightbulb
 import androidx.compose.material.icons.filled.Nightlight
 import androidx.compose.material.icons.outlined.DarkMode
 import androidx.compose.material.icons.outlined.Lightbulb
+import androidx.compose.material3.Button
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -34,7 +36,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.aaditx23.v2_assessment.util.SharedPreferences
+import com.aaditx23.v2_assessment.data.local.SharedPreferences
 import kotlinx.coroutines.flow.MutableStateFlow
 
 
@@ -44,38 +46,33 @@ fun DarkModeToggle(
 ) {
     val context = LocalContext.current
     var darkMode = SharedPreferences.darkModeEnabled.collectAsState()
-    Box(
-        modifier = Modifier
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Switch(
-            checked = darkMode.value,
-            onCheckedChange = {
-                SharedPreferences.setDarkModeEnabled(context, !darkMode.value)
-            },
-            thumbContent = {
-                if(darkMode.value){
-                    GradientBGButton(
-                        bgColor = GradientColors.MoonGradient,
-                        imageVector = Icons.Filled.DarkMode,
-                        contentDescription = "Dark Mode",
-                        tint = Color.White
-                    )
-                }
-                else{
-                    GradientBGButton(
-                        bgColor = GradientColors.SunGradient,
-                        imageVector = Icons.Filled.LightMode,
-                        contentDescription = "Light Mode",
-                        tint = Color.Yellow
-                    )
-                }
-            },
-            modifier = Modifier
-                .scale(0.7f)
-        )
-    }
+    Switch(
+        checked = darkMode.value,
+        onCheckedChange = {
+            SharedPreferences.setDarkModeEnabled(context, !darkMode.value)
+        },
+        thumbContent = {
+            if(darkMode.value){
+                GradientBGButton(
+                    bgColor = GradientColors.MoonGradient,
+                    imageVector = Icons.Filled.DarkMode,
+                    contentDescription = "Dark Mode",
+                    tint = Color.White
+                )
+            }
+            else{
+                GradientBGButton(
+                    bgColor = GradientColors.SunGradient,
+                    imageVector = Icons.Filled.LightMode,
+                    contentDescription = "Light Mode",
+                    tint = Color.Yellow
+                )
+            }
+        },
+        modifier = Modifier.scale(0.7f)
+
+
+    )
 }
 
 @Composable
@@ -87,7 +84,7 @@ fun GradientBGButton(
 ){
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .scale(01f)
             .clip(CircleShape)
             .background(bgColor),
         contentAlignment = Alignment.Center
@@ -96,7 +93,7 @@ fun GradientBGButton(
             imageVector = imageVector,
             contentDescription = contentDescription,
             modifier = Modifier
-                .fillMaxSize(0.8f),
+                .size(20.dp),
             colorFilter = ColorFilter.tint(
                 color = tint
             )

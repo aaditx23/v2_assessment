@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.data.local.Submission
+package com.aaditx23.v2_assessment.data.local.room.Submission
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

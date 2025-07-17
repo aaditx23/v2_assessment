@@ -1,6 +1,6 @@
 package com.aaditx23.v2_assessment.model
 
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerEntity
+import com.aaditx23.v2_assessment.data.local.room.Answer.AnswerEntity
 import com.aaditx23.v2_assessment.model.record.ReferId
 
 data class Answer (

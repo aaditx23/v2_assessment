@@ -1,10 +1,9 @@
-package com.aaditx23.v2_assessment.data.local.Submission
+package com.aaditx23.v2_assessment.data.local.room.Submission
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.aaditx23.v2_assessment.data.local.Submission.SubmissionEntity
 
 @Dao
 interface SubmissionDao {

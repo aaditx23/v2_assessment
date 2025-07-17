@@ -1,7 +1,7 @@
 package com.aaditx23.v2_assessment.data.repository
 
-import com.aaditx23.v2_assessment.data.local.Submission.SubmissionDao
-import com.aaditx23.v2_assessment.data.local.Submission.SubmissionEntity
+import com.aaditx23.v2_assessment.data.local.room.Submission.SubmissionDao
+import com.aaditx23.v2_assessment.data.local.room.Submission.SubmissionEntity
 import javax.inject.Inject
 
 class SubmissionRepository @Inject constructor(

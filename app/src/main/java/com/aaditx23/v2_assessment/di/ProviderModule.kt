@@ -3,9 +3,9 @@ package com.aaditx23.v2_assessment.di
 
 import com.aaditx23.v2_assessment.application.RetrofitServer
 import com.aaditx23.v2_assessment.application.RoomServer
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerDao
-import com.aaditx23.v2_assessment.data.local.AppDatabase
-import com.aaditx23.v2_assessment.data.local.Submission.SubmissionDao
+import com.aaditx23.v2_assessment.data.local.room.Answer.AnswerDao
+import com.aaditx23.v2_assessment.data.local.room.AppDatabase
+import com.aaditx23.v2_assessment.data.local.room.Submission.SubmissionDao
 import com.aaditx23.v2_assessment.data.remote.service.RecordService
 import dagger.Module
 import dagger.Provides

@@ -1,13 +1,9 @@
-package com.aaditx23.v2_assessment.data.local.Answer
+package com.aaditx23.v2_assessment.data.local.room.Answer
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import androidx.room.Update
-
-
 
 
 @Dao

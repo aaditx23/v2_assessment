@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
@@ -35,7 +37,8 @@ import com.aaditx23.v2_assessment.ui.components.JsonFlow.MultipleChoice
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.NumberInput
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.TextInput
 import com.aaditx23.v2_assessment.ui.screens.main.MainViewModel
-import com.aaditx23.v2_assessment.util.SharedPreferences
+import com.aaditx23.v2_assessment.data.local.SharedPreferences
+import com.aaditx23.v2_assessment.ui.components.ProgressBar
 
 @Composable
 fun RecordView(records: List<Record>, viewModel: MainViewModel) {
@@ -57,21 +60,30 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
             .padding(top = 50.dp),
         contentAlignment = Alignment.TopEnd
     ) {
-        ElevatedCard(
-            shape = MaterialTheme.shapes.medium,
+        ProgressBar(uiState.currentId.toFloat(), records.size.toFloat())
+
+        Card(
+            shape = RoundedCornerShape(16.dp),
             colors = CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.surface
+                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
             ),
             modifier = Modifier
-                .padding(8.dp)
-                .wrapContentSize()
+                .padding(horizontal = 12.dp)
+                .padding(top = 16.dp)
+                .wrapContentSize(align = Alignment.Center)
         ) {
-            Column{
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxWidth(0.12f)
+            ){
                 DarkModeToggle()
                 IconButton(
                     onClick = { viewModel.restart() },
                     modifier = Modifier
-                        .padding(8.dp)
+                        .padding(horizontal = 8.dp)
+                        .padding(bottom = 8.dp)
                 ) {
                     Icon(
                         imageVector = Icons.Outlined.Refresh,

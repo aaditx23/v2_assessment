@@ -1,6 +1,6 @@
 package com.aaditx23.v2_assessment.ui.screens.answer
 
-import com.aaditx23.v2_assessment.data.local.Answer.AnswerEntity
+import com.aaditx23.v2_assessment.data.local.room.Answer.AnswerEntity
 
 sealed class AnswerScreenState {
     object Loading : AnswerScreenState()

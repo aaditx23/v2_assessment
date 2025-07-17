@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.AnswerState
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.RecordUiState
-import com.aaditx23.v2_assessment.util.SharedPreferences
+import com.aaditx23.v2_assessment.data.local.SharedPreferences
 
 
 @HiltViewModel
