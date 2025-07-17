@@ -25,6 +25,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.aaditx23.v2_assessment.MainActivity
 import com.aaditx23.v2_assessment.model.Answer
@@ -61,6 +62,14 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
         contentAlignment = Alignment.TopEnd
     ) {
         ProgressBar(uiState.currentId.toFloat(), records.size.toFloat())
+        Text(
+            text = "Questions",
+            style = MaterialTheme.typography.headlineMedium,
+            modifier = Modifier
+                .padding(top = 16.dp)
+                .fillMaxWidth(),
+            textAlign = TextAlign.Center
+        )
 
         Card(
             shape = RoundedCornerShape(16.dp),

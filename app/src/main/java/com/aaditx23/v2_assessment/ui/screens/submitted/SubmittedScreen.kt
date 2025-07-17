@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -28,7 +29,12 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Icon
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavHostController
+import com.aaditx23.v2_assessment.ui.components.SearchBar
 
 @Composable
 fun SubmittedScreen(
@@ -64,91 +70,107 @@ fun SubmittedScreen(
             }
         }
         is SubmissionScreenState.SubmissionFound -> {
-            LazyColumn(
+            var query by remember { mutableStateOf("") }
+            val filteredSubmissions = if(query.isBlank()) subUiState.submissions
+            else subUiState.submissions.filter{ it.id.toString().contains(query)}
+            Column(
                 modifier = Modifier
                     .padding(top = 50.dp, bottom = 120.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                item {
-                    Text(
-                        text = "Submissions",
-                        style = MaterialTheme.typography.headlineMedium,
-                        modifier = Modifier.padding(start = 16.dp, bottom = 8.dp)
-                    )
-                }
-                itemsIndexed(subUiState.submissions) { index, submission ->
-                    val createdAt = getTime(submission.timestamp)
-                    ElevatedCard(
-                        modifier = Modifier
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                            .fillMaxWidth(),
-                        colors = CardDefaults.elevatedCardColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant
-                        ),
-                        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp)
-                    ) {
-                        Row(
+                Text(
+                    text = "Submissions",
+                    style = MaterialTheme.typography.headlineMedium,
+                    modifier = Modifier.padding(start = 16.dp)
+                )
+                SearchBar(
+                    value = query,
+                    onValueChange = { query = it },
+                    modifier = Modifier
+                        .padding(horizontal = 16.dp)
+                        .padding(top = 8.dp)
+                        .fillMaxWidth()
+                )
+                LazyColumn(
+                    modifier = Modifier
+                        .padding(top = 8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    itemsIndexed(filteredSubmissions) { index, submission ->
+                        val createdAt = getTime(submission.timestamp)
+                        ElevatedCard(
                             modifier = Modifier
-                                .padding(16.dp)
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
                                 .fillMaxWidth(),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceEvenly
+                            colors = CardDefaults.elevatedCardColors(
+                                containerColor = MaterialTheme.colorScheme.surfaceVariant
+                            ),
+                            elevation = CardDefaults.elevatedCardElevation(defaultElevation = 6.dp),
+                            shape = RoundedCornerShape(16.dp)
                         ) {
-                            Text(
-                                text = "#${submission.id}",
-                                style = MaterialTheme.typography.titleMedium,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            HSpace(16)
-                            ElevatedCard(
-                                modifier = Modifier,
-                                colors = CardDefaults.cardColors(
-                                    containerColor = MaterialTheme.colorScheme.primaryContainer
-                                ),
-                                elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-                                onClick = {
-                                    navController.navigate("answer/${submission.id}")
-                                }
+                            Row(
+                                modifier = Modifier
+                                    .padding(16.dp)
+                                    .fillMaxWidth(),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.SpaceEvenly
                             ) {
                                 Text(
-                                    text = "View Submission",
-                                    modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
-                                    style = MaterialTheme.typography.bodyMedium,
-                                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    text = "#${submission.id}",
+                                    style = MaterialTheme.typography.titleMedium,
+                                    color = MaterialTheme.colorScheme.primary
                                 )
-                            }
-                            HSpace(16)
-                            createdAt?.let {
-                                val date = createdAt.substringBefore("|")
-                                val time = createdAt.substringAfter("|")
-                                Column(
-                                    modifier = Modifier.padding(start = 16.dp)
-                                ) {
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(
-                                            imageVector = Icons.Filled.CalendarMonth,
-                                            contentDescription = "Date",
-                                            tint = MaterialTheme.colorScheme.primary,
-                                            modifier = Modifier.padding(end = 4.dp)
-                                        )
-                                        Text(
-                                            text = date,
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
+                                HSpace(16)
+                                ElevatedCard(
+                                    modifier = Modifier,
+                                    colors = CardDefaults.cardColors(
+                                        containerColor = MaterialTheme.colorScheme.primaryContainer
+                                    ),
+                                    elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
+                                    onClick = {
+                                        navController.navigate("answer/${submission.id}")
                                     }
-                                    Row(verticalAlignment = Alignment.CenterVertically) {
-                                        Icon(
-                                            imageVector = Icons.Filled.AccessTime,
-                                            contentDescription = "Time",
-                                            tint = MaterialTheme.colorScheme.primary,
-                                            modifier = Modifier.padding(end = 4.dp)
-                                        )
-                                        Text(
-                                            text = time,
-                                            style = MaterialTheme.typography.bodySmall,
-                                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                                        )
+                                ) {
+                                    Text(
+                                        text = "View Submission",
+                                        modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                    )
+                                }
+                                HSpace(16)
+                                createdAt?.let {
+                                    val date = createdAt.substringBefore("|")
+                                    val time = createdAt.substringAfter("|")
+                                    Column(
+                                        modifier = Modifier.padding(start = 16.dp)
+                                    ) {
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(
+                                                imageVector = Icons.Filled.CalendarMonth,
+                                                contentDescription = "Date",
+                                                tint = MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier.padding(end = 4.dp)
+                                            )
+                                            Text(
+                                                text = date,
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
+                                        Row(verticalAlignment = Alignment.CenterVertically) {
+                                            Icon(
+                                                imageVector = Icons.Filled.AccessTime,
+                                                contentDescription = "Time",
+                                                tint = MaterialTheme.colorScheme.primary,
+                                                modifier = Modifier.padding(end = 4.dp)
+                                            )
+                                            Text(
+                                                text = time,
+                                                style = MaterialTheme.typography.bodySmall,
+                                                color = MaterialTheme.colorScheme.onSurfaceVariant
+                                            )
+                                        }
                                     }
                                 }
                             }
@@ -156,6 +178,8 @@ fun SubmittedScreen(
                     }
                 }
             }
+
+
         }
     }
 }
