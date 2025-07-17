@@ -7,13 +7,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.Button
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
@@ -23,19 +27,20 @@ import androidx.compose.ui.unit.dp
 import com.aaditx23.v2_assessment.MainActivity
 import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.Record
+import com.aaditx23.v2_assessment.ui.components.DarkModeToggle
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.Camera
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.CheckBox
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.DropDown
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.MultipleChoice
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.NumberInput
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.TextInput
-import com.aaditx23.v2_assessment.ui.components.ProgressBar
 import com.aaditx23.v2_assessment.ui.screens.main.MainViewModel
+import com.aaditx23.v2_assessment.util.SharedPreferences
 
 @Composable
 fun RecordView(records: List<Record>, viewModel: MainViewModel) {
     val uiState by viewModel.recordUiState.collectAsState()
-    val submitted by viewModel.submitted.collectAsState()
+    val submitted by SharedPreferences.submitted.collectAsState()
 
     var currentRecord by remember { mutableStateOf<Record?>(records.find { it.id == uiState.currentId }) }
     val context = LocalContext.current
@@ -45,29 +50,35 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
         viewModel.resetErrorAndHasValue()
     }
 
+
     Box(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(top = 50.dp),
-        contentAlignment = Alignment.TopStart
-    ){
-        Column(
-            horizontalAlignment = Alignment.End
+        contentAlignment = Alignment.TopEnd
+    ) {
+        ElevatedCard(
+            shape = MaterialTheme.shapes.medium,
+            colors = CardDefaults.elevatedCardColors(
+                containerColor = MaterialTheme.colorScheme.surface
+            ),
+            modifier = Modifier
+                .padding(8.dp)
+                .wrapContentSize()
         ) {
-            ProgressBar(uiState.currentId.toFloat(), records.size.toFloat())
-
-            IconButton(
-                onClick = {
-                    viewModel.restart()
-                }
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.Refresh,
-                    contentDescription = "Refresh",
+            Column{
+                DarkModeToggle()
+                IconButton(
+                    onClick = { viewModel.restart() },
                     modifier = Modifier
-                        .padding(10.dp)
-                        .size(24.dp)
-                )
+                        .padding(8.dp)
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Refresh,
+                        contentDescription = "Refresh",
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
     }
@@ -159,6 +170,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
                                     questionId = uiState.currentId,
                                     answer = it,
                                 )
+                                SharedPreferences.setSubmitted(context, true)
                             }
                         },
                         enabled = !uiState.hasError && uiState.hasValue
@@ -186,7 +198,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
 
         if(submitted){
             LaunchedEffect(Unit){
-                viewModel.setSubmittedFlag(context, true)
+                SharedPreferences.setSubmitted(context, true)
                 val intent = Intent(context, MainActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)

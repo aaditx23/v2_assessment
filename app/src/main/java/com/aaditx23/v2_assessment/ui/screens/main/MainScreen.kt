@@ -10,6 +10,7 @@ import com.aaditx23.v2_assessment.ui.components.ErrorDialog
 import com.aaditx23.v2_assessment.ui.components.LoadingDialog
 import com.aaditx23.v2_assessment.ui.screens.main.child.RecordView
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.SubmitSuccessDialog
+import com.aaditx23.v2_assessment.util.SharedPreferences
 
 @Composable
 fun MainScreen(
@@ -18,11 +19,11 @@ fun MainScreen(
 ) {
 
     val state = viewModel.mainScreenState.collectAsState()
-    val submitted = viewModel.submitted.collectAsState()
+    val submitted = SharedPreferences.submitted.collectAsState()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
-        viewModel.getSubmittedFlag(context)
+        SharedPreferences.isSubmitted(context)
         viewModel.fetchRecords()
     }
 
@@ -32,13 +33,13 @@ fun MainScreen(
         }
         is MainScreenState.Success -> {
             if (submitted.value){
-                viewModel.setSubmittedFlag(context, false)
                 SubmitSuccessDialog(
                     onViewSubmissions = {
+                        SharedPreferences.setSubmitted(context, false)
                         navController.navigate("Submissions")
                     },
                     onRestart = {
-                        viewModel.setSubmitted(false)
+                        SharedPreferences.setSubmitted(context, false)
                         viewModel.restart()
                     }
                 )

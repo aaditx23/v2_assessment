@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.AnswerState
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.RecordUiState
-import androidx.core.content.edit
+import com.aaditx23.v2_assessment.util.SharedPreferences
 
 
 @HiltViewModel
@@ -43,7 +43,6 @@ class MainViewModel @Inject constructor(
         val current = _answerState.value
         current.addAnswer(questionId, answer)
         _answerState.value = current
-        println("Updated $questionId to \n$answer")
         navigateNext(referTo)
 
     }
@@ -107,25 +106,9 @@ class MainViewModel @Inject constructor(
                 ans.toEntity(submissionId, questionId)
             }
             answerRepository.insertAnswers(answerList)
-            _submitted.value = true
         }
 
     }
-    fun setSubmitted(submitted: Boolean){
-        _submitted.value = submitted
-    }
 
-    fun setSubmittedFlag(context: Context, isSubmitted: Boolean){
-        viewModelScope.launch {
-            val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
-            preferences.edit { putBoolean("submitted", isSubmitted) }
-
-        }
-    }
-
-    fun getSubmittedFlag(context: Context){
-        val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
-        _submitted.value = preferences.getBoolean("submitted", false)
-    }
 
 }

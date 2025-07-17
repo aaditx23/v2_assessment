@@ -8,9 +8,11 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import com.aaditx23.v2_assessment.ui.screens.Navigation
 import com.aaditx23.v2_assessment.ui.theme.V2_assessmentTheme
+import com.aaditx23.v2_assessment.util.SharedPreferences
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -21,6 +23,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val darkMode = SharedPreferences.darkModeEnabled.collectAsState()
             BackHandler(
                 enabled = true,
                 onBack = {
@@ -28,7 +31,9 @@ class MainActivity : ComponentActivity() {
                 }
             )
 
-            V2_assessmentTheme {
+            V2_assessmentTheme(
+                darkTheme = darkMode.value
+            ) {
                 Scaffold(modifier = Modifier.fillMaxSize()) {  innerPadding ->
                     Navigation()
                 }
