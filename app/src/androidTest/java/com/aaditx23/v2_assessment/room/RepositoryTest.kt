@@ -42,8 +42,7 @@ class RepositoryTest {
     @Test
     fun testSubmissionAndAnswerRepositoryFlow() = runBlocking {
         // 1. Create submission and test SubmissionRepository methods
-        val submission = SubmissionEntity(timestamp = System.currentTimeMillis())
-        val submissionId = submissionRepository.insertSubmission(submission)
+        val submissionId = submissionRepository.insertSubmission()
         println("Inserted submission with id: $submissionId")
 
         val allSubmissions = submissionRepository.getAllSubmissions()
