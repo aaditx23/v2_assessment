@@ -50,7 +50,9 @@ fun NumberInput(
                 input = it
                 if (regex != null && it.isNotBlank()) {
                     val pattern = Pattern.compile(regex)
-                    error = if (!pattern.matcher(it).matches()) "Invalid input" else null
+                    error = if (!pattern.matcher(it).matches()) {
+                        "Please enter a number between 1 and 15."
+                    } else null
                 } else {
                     error = null
                 }

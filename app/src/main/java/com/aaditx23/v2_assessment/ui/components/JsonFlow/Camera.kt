@@ -106,7 +106,6 @@ fun Camera(
                     LaunchedEffect(Unit) {
                         launchCamera(context, cameraLauncher, { imagePath = it }, { imageUri = it })
                     }
-                    Text("Launching Camera...")
                 }
                 permissionState.status.shouldShowRationale -> {
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {

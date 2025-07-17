@@ -9,7 +9,7 @@ v2_assessment is a modern Android application that demonstrates a dynamic questi
 - Multiple question types (text, number, checkbox, dropdown, multiple choice, camera)
 - Navigation between questions using referTo and skip logic
 - Error handling and user feedback dialogs
-- Submission and decorated display of answers
+- Submission and decorated display of answers: Search, View details, Delete
 - Modular, scalable codebase (MVVM, Compose, Hilt)
 
 ## Folder Structure
@@ -78,3 +78,14 @@ Some test cases are included to verify backend functionality (API calls, data ha
 
 - The codebase is modular and follows industry standards for scalability and maintainability.
 - Error handling and user feedback are implemented throughout the app.
+- Regex validations are implemented for user input fields to ensure data integrity and proper formatting throughout the app.
+
+## Screenshots
+
+
+| | | |
+|:-:|:-:|:-:|
+| ![](screenshots/01.png) | ![](screenshots/02.png) | ![](screenshots/03.png) |
+| ![](screenshots/04.png) | ![](screenshots/05.png) | ![](screenshots/06.png) |
+| ![](screenshots/07.png) | ![](screenshots/08.png) | ![](screenshots/09.png) |
+| ![](screenshots/10.png) | ![](screenshots/11.png) | |
