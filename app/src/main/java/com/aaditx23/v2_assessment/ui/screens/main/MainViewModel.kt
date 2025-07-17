@@ -25,8 +25,8 @@ class MainViewModel @Inject constructor(
     private val submissionRepository: SubmissionRepository,
     private val answerRepository: AnswerRepository
 ) : ViewModel() {
-    private val _mainUiState = MutableStateFlow<MainScreenState>(MainScreenState.Loading)
-    val mainUiState: StateFlow<MainScreenState> = _mainUiState
+    private val _mainScreenState = MutableStateFlow<MainScreenState>(MainScreenState.Loading)
+    val mainScreenState: StateFlow<MainScreenState> = _mainScreenState
 
     private val _answerState = MutableStateFlow(AnswerState())
     val answerState: StateFlow<AnswerState> = _answerState
@@ -61,12 +61,12 @@ class MainViewModel @Inject constructor(
 
     fun fetchRecords() {
         viewModelScope.launch {
-            _mainUiState.value = MainScreenState.Loading
+            _mainScreenState.value = MainScreenState.Loading
             try {
                 val response = recordRepository.getRecords().record
-                _mainUiState.value = MainScreenState.Success(response)
+                _mainScreenState.value = MainScreenState.Success(response)
             } catch (e: Exception) {
-                _mainUiState.value = MainScreenState.Error(e.message ?: "Unknown error")
+                _mainScreenState.value = MainScreenState.Error(e.message ?: "Unknown error")
             }
         }
     }

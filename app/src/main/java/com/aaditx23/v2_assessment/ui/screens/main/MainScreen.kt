@@ -4,15 +4,11 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import com.aaditx23.v2_assessment.ui.components.ErrorDialog
 import com.aaditx23.v2_assessment.ui.components.LoadingDialog
-import com.aaditx23.v2_assessment.ui.components.JsonFlow.RecordView
+import com.aaditx23.v2_assessment.ui.screens.main.child.RecordView
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.SubmitSuccessDialog
 
 @Composable
@@ -21,7 +17,7 @@ fun MainScreen(
     navController: NavHostController
 ) {
 
-    val state = viewModel.mainUiState.collectAsState()
+    val state = viewModel.mainScreenState.collectAsState()
     val submitted = viewModel.submitted.collectAsState()
     val context = LocalContext.current
 

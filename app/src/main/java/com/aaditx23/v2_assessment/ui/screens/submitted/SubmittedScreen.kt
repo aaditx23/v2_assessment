@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
@@ -25,23 +24,22 @@ import com.aaditx23.v2_assessment.ui.components.ErrorDialog
 import com.aaditx23.v2_assessment.ui.components.HSpace
 import com.aaditx23.v2_assessment.ui.components.LoadingDialog
 import com.aaditx23.v2_assessment.util.getTime
-import java.time.Instant
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CalendarToday
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material3.Icon
+import androidx.navigation.NavHostController
 
 @Composable
 fun SubmittedScreen(
-    viewModel: SubmittedViewModel = hiltViewModel()
+    viewModel: SubmittedViewModel = hiltViewModel(),
+    navController: NavHostController
 ){
-    val state = viewModel.submittedScreenUiState.collectAsState()
-    val records = viewModel.records.collectAsState()
+    val state = viewModel.submittedScreenState.collectAsState()
 
 
     LaunchedEffect(Unit) {
-        viewModel.refresh()
+        viewModel.getAllSubmissions()
     }
 
     when (val subUiState = state.value){
@@ -49,7 +47,7 @@ fun SubmittedScreen(
             ErrorDialog(
                 message = subUiState.error,
                 onCancel = {
-                    viewModel.refresh()
+                    viewModel.getAllSubmissions()
                 }
             )
         }
@@ -109,7 +107,7 @@ fun SubmittedScreen(
                                 ),
                                 elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
                                 onClick = {
-
+                                    navController.navigate("answer/${submission.id}")
                                 }
                             ) {
                                 Text(

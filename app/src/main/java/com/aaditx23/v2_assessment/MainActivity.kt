@@ -3,6 +3,7 @@ package com.aaditx23.v2_assessment
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
@@ -20,6 +21,12 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            BackHandler(
+                enabled = true,
+                onBack = {
+                    // do nothing
+                }
+            )
 
             V2_assessmentTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {  innerPadding ->

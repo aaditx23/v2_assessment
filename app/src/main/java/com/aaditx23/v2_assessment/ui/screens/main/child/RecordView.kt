@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.ui.components.JsonFlow
+package com.aaditx23.v2_assessment.ui.screens.main.child
 
 import android.app.Activity
 import android.content.Intent
@@ -18,13 +18,17 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
 import com.aaditx23.v2_assessment.MainActivity
 import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.Record
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.Camera
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.CheckBox
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.DropDown
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.MultipleChoice
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.NumberInput
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.TextInput
 import com.aaditx23.v2_assessment.ui.components.ProgressBar
 import com.aaditx23.v2_assessment.ui.screens.main.MainViewModel
 
