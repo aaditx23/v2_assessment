@@ -90,6 +90,11 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
+
+    // Permissions
+    implementation("com.google.accompanist:accompanist-permissions:0.37.3")
+    
+    // Extended icons
     implementation("androidx.compose.material:material-icons-extended:1.7.8")
 
     // ViewModel
