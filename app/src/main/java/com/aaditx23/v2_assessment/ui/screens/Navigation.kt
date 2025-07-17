@@ -1,7 +1,6 @@
 package com.aaditx23.v2_assessment.ui.screens
 
 import android.annotation.SuppressLint
-import androidx.activity.compose.BackHandler
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -16,9 +15,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.aaditx23.v2_assessment.ui.components.BottomNav.BottomNavBar
-import com.aaditx23.v2_assessment.ui.screens.main.MainScreen
 import com.aaditx23.v2_assessment.ui.components.BottomNav.BottomNavItem.Companion.bottomNavItemList
 import com.aaditx23.v2_assessment.ui.screens.answer.AnswerScreen
+import com.aaditx23.v2_assessment.ui.screens.main.MainScreen
 import com.aaditx23.v2_assessment.ui.screens.submitted.SubmittedScreen
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -77,3 +76,4 @@ fun Navigation(){
 
     }
 }
+

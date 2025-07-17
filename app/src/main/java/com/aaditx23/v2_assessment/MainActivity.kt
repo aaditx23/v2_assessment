@@ -10,9 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import com.aaditx23.v2_assessment.data.local.SharedPreferences
 import com.aaditx23.v2_assessment.ui.screens.Navigation
 import com.aaditx23.v2_assessment.ui.theme.V2_assessmentTheme
-import com.aaditx23.v2_assessment.data.local.SharedPreferences
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -24,6 +26,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             val darkMode = SharedPreferences.darkModeEnabled.collectAsState()
+            setStatusBarStyle(this, darkMode.value)
             BackHandler(
                 enabled = true,
                 onBack = {
@@ -40,4 +43,12 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+}
+
+private fun setStatusBarStyle(activity: ComponentActivity, isDarkMode: Boolean) {
+    val window = activity.window
+    WindowCompat.setDecorFitsSystemWindows(window, false)
+
+    val insetsController = WindowInsetsControllerCompat(window, window.decorView)
+    insetsController.isAppearanceLightStatusBars = !isDarkMode // true for light content, false for dark
 }

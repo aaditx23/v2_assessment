@@ -3,43 +3,33 @@ package com.aaditx23.v2_assessment.ui.screens.main.child
 import android.app.Activity
 import android.content.Intent
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Refresh
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.aaditx23.v2_assessment.MainActivity
+import com.aaditx23.v2_assessment.data.local.SharedPreferences
 import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.Record
-import com.aaditx23.v2_assessment.ui.components.DarkModeToggle
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.Camera
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.CheckBox
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.DropDown
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.MultipleChoice
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.NumberInput
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.RecordHeader
 import com.aaditx23.v2_assessment.ui.components.JsonFlow.TextInput
 import com.aaditx23.v2_assessment.ui.screens.main.MainViewModel
-import com.aaditx23.v2_assessment.data.local.SharedPreferences
-import com.aaditx23.v2_assessment.ui.components.ProgressBar
 
 @Composable
 fun RecordView(records: List<Record>, viewModel: MainViewModel) {
@@ -54,52 +44,11 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
         viewModel.resetErrorAndHasValue()
     }
 
-
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 50.dp),
-        contentAlignment = Alignment.TopEnd
+    RecordHeader(
+        currentId = uiState.currentId.toFloat(),
+        size = records.size.toFloat()
     ) {
-        ProgressBar(uiState.currentId.toFloat(), records.size.toFloat())
-        Text(
-            text = "Questions",
-            style = MaterialTheme.typography.headlineMedium,
-            modifier = Modifier
-                .padding(top = 16.dp)
-                .fillMaxWidth(),
-            textAlign = TextAlign.Center
-        )
-
-        Card(
-            shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
-            modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .padding(top = 16.dp)
-                .wrapContentSize(align = Alignment.Center)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .fillMaxWidth(0.12f)
-            ){
-                DarkModeToggle()
-                IconButton(
-                    onClick = { viewModel.restart() },
-                    modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .padding(bottom = 8.dp)
-                ) {
-                    Icon(
-                        imageVector = Icons.Outlined.Refresh,
-                        contentDescription = "Refresh",
-                        tint = MaterialTheme.colorScheme.onSurfaceVariant
-                    )
-                }
-            }
-        }
+        viewModel.restart()
     }
 
     Column(

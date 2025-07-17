@@ -1,7 +1,7 @@
 package com.aaditx23.v2_assessment.data.repository
 
-import com.aaditx23.v2_assessment.data.remote.service.RecordService
 import com.aaditx23.v2_assessment.data.remote.model.ApiResponse
+import com.aaditx23.v2_assessment.data.remote.service.RecordService
 import javax.inject.Inject
 
 class RecordRepository @Inject constructor(

@@ -1,9 +1,9 @@
 package com.aaditx23.v2_assessment.data.remote.service
 
 import com.aaditx23.v2_assessment.BuildConfig
+import com.aaditx23.v2_assessment.data.remote.model.ApiResponse
 import retrofit2.http.GET
 import retrofit2.http.Url
-import com.aaditx23.v2_assessment.data.remote.model.ApiResponse
 
 interface RecordService {
     @GET

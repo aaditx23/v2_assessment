@@ -4,19 +4,17 @@ package com.aaditx23.v2_assessment.ui.screens.main
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.aaditx23.v2_assessment.data.repository.AnswerRepository
-
 import com.aaditx23.v2_assessment.data.repository.RecordRepository
 import com.aaditx23.v2_assessment.data.repository.SubmissionRepository
 import com.aaditx23.v2_assessment.model.Answer
 import com.aaditx23.v2_assessment.model.record.ReferId
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.AnswerState
+import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.RecordUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.AnswerState
-import com.aaditx23.v2_assessment.ui.components.JsonFlow.states.RecordUiState
-import com.aaditx23.v2_assessment.data.local.SharedPreferences
+import javax.inject.Inject
 
 
 @HiltViewModel

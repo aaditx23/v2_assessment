@@ -2,15 +2,12 @@ package com.aaditx23.v2_assessment.ui.screens.submitted
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.aaditx23.v2_assessment.data.repository.RecordRepository
 import com.aaditx23.v2_assessment.data.repository.SubmissionRepository
-import com.aaditx23.v2_assessment.model.record.Record
-import com.aaditx23.v2_assessment.util.FileUtil
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @HiltViewModel
 class SubmittedViewModel @Inject constructor(
