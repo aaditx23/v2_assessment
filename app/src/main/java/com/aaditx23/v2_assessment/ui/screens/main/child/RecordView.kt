@@ -73,9 +73,7 @@ fun RecordView(records: List<Record>, viewModel: MainViewModel) {
 
         Card(
             shape = RoundedCornerShape(16.dp),
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)
-            ),
+            colors = CardDefaults.cardColors(MaterialTheme.colorScheme.primary.copy(alpha = 0.2f)),
             modifier = Modifier
                 .padding(horizontal = 12.dp)
                 .padding(top = 16.dp)

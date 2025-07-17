@@ -19,6 +19,9 @@ interface SubmissionDao {
     @Query("DELETE FROM submissions WHERE id = :id")
     suspend fun deleteSubmissionById(id: Long)
 
+    @Query("SELECT answerValue FROM answers WHERE questionType = 'camera' AND questionId = '5' AND submissionId = :id")
+    suspend fun getImagePathFromSubmission(id: Long): String
+
     @Query("DELETE FROM submissions")
     suspend fun deleteAllSubmissions()
 

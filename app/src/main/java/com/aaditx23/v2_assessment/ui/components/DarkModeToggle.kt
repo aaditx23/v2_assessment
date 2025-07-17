@@ -20,6 +20,8 @@ import androidx.compose.material.icons.outlined.Lightbulb
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchColors
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -51,6 +53,7 @@ fun DarkModeToggle(
         onCheckedChange = {
             SharedPreferences.setDarkModeEnabled(context, !darkMode.value)
         },
+        colors = SwitchDefaults.colors(MaterialTheme.colorScheme.primary),
         thumbContent = {
             if(darkMode.value){
                 GradientBGButton(

@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CircularProgressIndicator
@@ -19,8 +18,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.Icon
+import androidx.compose.material3.Button
+import androidx.compose.material3.TextButton
 
 @Composable
 fun LoadingDialog(text: String) {
@@ -63,16 +66,44 @@ fun ProgressBar(progress: Float, total: Float, modifier: Modifier = Modifier) {
     }
 }
 
-@Preview(showBackground = true)
 @Composable
-fun LoadingDialogPreview() {
-    LoadingDialog(text = "Loading, please wait...")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun ProgressBarPreview() {
-    ProgressBar(1.0f,10.0f, modifier = Modifier
+fun ConfirmDeleteDialog(
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit,
+    modifier: Modifier = Modifier,
+    title: String = "Delete Submission",
+    message: String = "Are you sure you want to delete this submission? This action cannot be undone."
+) {
+    AlertDialog(
+        modifier = modifier,
+        onDismissRequest = {},
+        icon = {
+            Icon(
+                imageVector = Icons.Filled.Delete,
+                contentDescription = "Delete",
+                tint = MaterialTheme.colorScheme.error
+            )
+        },
+        title = {
+            Text(text = title, style = MaterialTheme.typography.titleLarge)
+        },
+        text = {
+            Text(text = message)
+        },
+        confirmButton = {
+            Button(
+                onClick = onConfirm,
+                colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.error
+                )
+            ) {
+                Text("Delete")
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onCancel) {
+                Text("Cancel")
+            }
+        }
     )
 }
-

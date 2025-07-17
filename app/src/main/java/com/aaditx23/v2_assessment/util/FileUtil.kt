@@ -15,7 +15,7 @@ object FileUtil {
             context.filesDir
         // Internal storage:
         // manipulating this file from other apps might cause it to break
-        // No need for storage permission
+        // Pros: No need for storage permission
         )
     }
 
@@ -25,6 +25,16 @@ object FileUtil {
             "${context.packageName}.provider",
             file
         )
+    }
+
+    fun deleteImageFile(context: Context, path: String) {
+        val file = File(path)
+        val appDir = context.filesDir.absolutePath
+        if (file.exists() && file.absolutePath.startsWith(appDir)) { // validate if file is owned by this app only
+
+            file.delete()
+            println("Deleted: $path")
+        }
     }
 }
 

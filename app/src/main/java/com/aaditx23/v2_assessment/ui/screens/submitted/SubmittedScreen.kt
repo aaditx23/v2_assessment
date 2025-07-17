@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
@@ -28,13 +29,19 @@ import com.aaditx23.v2_assessment.util.getTime
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.CalendarMonth
+import androidx.compose.material.icons.outlined.DeleteForever
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
+import com.aaditx23.v2_assessment.ui.components.ConfirmDeleteDialog
+import com.aaditx23.v2_assessment.ui.components.DateAndTime
 import com.aaditx23.v2_assessment.ui.components.SearchBar
+import com.aaditx23.v2_assessment.util.FileUtil
 
 @Composable
 fun SubmittedScreen(
@@ -42,7 +49,8 @@ fun SubmittedScreen(
     navController: NavHostController
 ){
     val state = viewModel.submittedScreenState.collectAsState()
-
+    val imagePath = viewModel.imagePath.collectAsState()
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.getAllSubmissions()
@@ -72,7 +80,7 @@ fun SubmittedScreen(
         is SubmissionScreenState.SubmissionFound -> {
             var query by remember { mutableStateOf("") }
             val filteredSubmissions = if(query.isBlank()) subUiState.submissions
-            else subUiState.submissions.filter{ it.id.toString().contains(query)}
+                        else subUiState.submissions.filter{ it.id.toString().contains(query)}
             Column(
                 modifier = Modifier
                     .padding(top = 50.dp, bottom = 120.dp),
@@ -96,7 +104,8 @@ fun SubmittedScreen(
                         .padding(top = 8.dp),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    itemsIndexed(filteredSubmissions) { index, submission ->
+                    items(filteredSubmissions, key = { it.id }) { submission ->
+                        var showDeleteConfirmation by remember { mutableStateOf(false) }
                         val createdAt = getTime(submission.timestamp)
                         ElevatedCard(
                             modifier = Modifier
@@ -113,14 +122,13 @@ fun SubmittedScreen(
                                     .padding(16.dp)
                                     .fillMaxWidth(),
                                 verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.SpaceEvenly
+                                horizontalArrangement = Arrangement.SpaceBetween
                             ) {
                                 Text(
                                     text = "#${submission.id}",
                                     style = MaterialTheme.typography.titleMedium,
                                     color = MaterialTheme.colorScheme.primary
                                 )
-                                HSpace(16)
                                 ElevatedCard(
                                     modifier = Modifier,
                                     colors = CardDefaults.cardColors(
@@ -138,46 +146,41 @@ fun SubmittedScreen(
                                         color = MaterialTheme.colorScheme.onPrimaryContainer
                                     )
                                 }
-                                HSpace(16)
-                                createdAt?.let {
-                                    val date = createdAt.substringBefore("|")
-                                    val time = createdAt.substringAfter("|")
-                                    Column(
-                                        modifier = Modifier.padding(start = 16.dp)
-                                    ) {
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Icon(
-                                                imageVector = Icons.Filled.CalendarMonth,
-                                                contentDescription = "Date",
-                                                tint = MaterialTheme.colorScheme.primary,
-                                                modifier = Modifier.padding(end = 4.dp)
-                                            )
-                                            Text(
-                                                text = date,
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                                            )
-                                        }
-                                        Row(verticalAlignment = Alignment.CenterVertically) {
-                                            Icon(
-                                                imageVector = Icons.Filled.AccessTime,
-                                                contentDescription = "Time",
-                                                tint = MaterialTheme.colorScheme.primary,
-                                                modifier = Modifier.padding(end = 4.dp)
-                                            )
-                                            Text(
-                                                text = time,
-                                                style = MaterialTheme.typography.bodySmall,
-                                                color = MaterialTheme.colorScheme.onSurfaceVariant
-                                            )
-                                        }
+                                IconButton(
+                                    onClick = {
+                                        viewModel.getImagePath(submission.id)
+                                        showDeleteConfirmation = true
                                     }
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Outlined.DeleteForever,
+                                        contentDescription = "Delete entry",
+                                        tint = MaterialTheme.colorScheme.error,
+                                        modifier = Modifier
+                                            .padding(8.dp)
+                                    )
+                                }
+                                createdAt?.let {
+                                    DateAndTime(createdAt)
                                 }
                             }
+                        }
+                        if(showDeleteConfirmation){
+                            ConfirmDeleteDialog(
+                                onCancel = { showDeleteConfirmation = false },
+                                onConfirm = {
+                                    if (imagePath.value.isNotBlank()){
+                                        FileUtil.deleteImageFile(context, imagePath.value)
+                                        viewModel.deleteSubmission(submission.id)
+                                        showDeleteConfirmation = false
+                                    }
+                                }
+                            )
                         }
                     }
                 }
             }
+
 
 
         }
