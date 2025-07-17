@@ -1,11 +1,9 @@
-package com.aaditx23.v2_assessment.ui.components.Navigation
+package com.aaditx23.v2_assessment.ui.components.BottomNav
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AssignmentTurnedIn
 import androidx.compose.material.icons.filled.Quiz
-import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material.icons.outlined.AssignmentTurnedIn
 import androidx.compose.material.icons.outlined.Quiz
-import androidx.compose.material.icons.outlined.Timer
 import androidx.compose.ui.graphics.vector.ImageVector
 
 sealed class BottomNavItem(

@@ -1,4 +1,4 @@
-package com.aaditx23.v2_assessment.ui.components.Navigation
+package com.aaditx23.v2_assessment.ui.components.BottomNav
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.height
@@ -15,7 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.aaditx23.v2_assessment.ui.components.Navigation.BottomNavItem.Companion.bottomNavItemList
+import com.aaditx23.v2_assessment.ui.components.BottomNav.BottomNavItem.Companion.bottomNavItemList
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
