@@ -18,6 +18,7 @@ interface AnswerDao {
 
     @Query("SELECT * FROM answers where submissionId = :submissionId")
     suspend fun getAnswersBySubmissionId(submissionId: Long): List<AnswerEntity>
+
     @Query("SELECT * FROM answers WHERE id = :id")
         suspend fun getAnswerById(id: Long): AnswerEntity?
 

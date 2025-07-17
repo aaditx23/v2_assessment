@@ -20,4 +20,7 @@ class SubmissionRepository @Inject constructor(
 
     suspend fun deleteSubmissionById(id: Long) =
         submissionDao.deleteSubmissionById(id)
+
+    suspend fun getSubmissionCount() =
+        submissionDao.getSubmissionCount()
 }

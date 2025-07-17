@@ -119,14 +119,13 @@ class MainViewModel @Inject constructor(
         viewModelScope.launch {
             val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
             preferences.edit { putBoolean("submitted", isSubmitted) }
+
         }
     }
 
     fun getSubmittedFlag(context: Context){
         val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         _submitted.value = preferences.getBoolean("submitted", false)
-
-
     }
 
 }

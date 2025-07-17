@@ -23,6 +23,9 @@ interface SubmissionDao {
     @Query("DELETE FROM submissions")
     suspend fun deleteAllSubmissions()
 
+    @Query("SELECT COUNT(*) FROM submissions")
+    suspend fun getSubmissionCount(): Int
+
 
 }
 

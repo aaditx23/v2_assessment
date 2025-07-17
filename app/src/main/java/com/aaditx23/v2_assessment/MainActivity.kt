@@ -12,6 +12,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.aaditx23.v2_assessment.ui.components.Navigation.Navigation
 import com.aaditx23.v2_assessment.ui.screens.main.MainScreen
 import com.aaditx23.v2_assessment.ui.theme.V2_assessmentTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -26,9 +28,10 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+
             V2_assessmentTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) {  innerPadding ->
-                    MainScreen()
+                    Navigation()
                 }
             }
         }
