@@ -37,7 +37,7 @@ README.md                 # Project documentation
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/aaditx23/v2_assessment.git
    ```
 2. **Open in Android Studio:**
    - Launch Android Studio.
